@@ -20,7 +20,8 @@ public class Particle3DVerlet
     static double Energy = 0, Energypre = 0, diff = 0;
     //Energy and Energypre are used to calculate the difference in energy between two consecutve time steps.
 
-    public static void main(String[] argv) throws IOException {
+    public static void main(String[] argv) throws IOException
+    {
 
      //Identify input file from command line
 	File file = new File(argv[0]);
@@ -63,8 +64,8 @@ public class Particle3DVerlet
         forceNew =small.GravitationalForce(small,big);
         //Update the velocity using the average of the forces before and after the timestep, which is calculated in a temporary vector tempForce
         tempForce = force;
-        tempForce.addVector(forceNew);
-        tempForce.scalarMultiplication(0.5);
+        tempForce=Vector3D.vectorAddition(forceNew,tempForce);
+        tempForce.scalarMultiply(0.5);
         small.velocityUpdate(dt,tempForce); 
         //Update time
         t=t+dt;

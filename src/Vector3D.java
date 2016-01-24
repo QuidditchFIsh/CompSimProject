@@ -5,7 +5,8 @@
  * @version 10/2015
  */
 
-public class Vector3D  {
+public class Vector3D 
+{
 	
 
     private double x;
@@ -17,10 +18,12 @@ public class Vector3D  {
     public double getX() {
     	return x;
     }
-    public double getY() {
+    public double getY()
+    {
     	return y;
     }
-    public double getZ() {
+    public double getZ() 
+    {
     	return z;
     }
 /**Sets the values of the components of the vector to a given value.
@@ -29,18 +32,22 @@ public class Vector3D  {
   * @param zz The z component
  */
 
-    public void setX(double xx) {
+    public void setX(double xx) 
+    {
     	x = xx;
     }
-    public void setY(double yy) {
+    public void setY(double yy)
+    {
     	y = yy;
     }
-    public void setZ(double zz) {
+    public void setZ(double zz)
+    {
     	z = zz;
     }
 /**Sets the components of the vector to zero.
  */
-    public Vector3D () {
+    public Vector3D () 
+    {
 	x = 0.0;
 	y = 0.0;
 	z = 0.0;
@@ -51,7 +58,8 @@ public class Vector3D  {
  * @param yy The y component
  * @param zz The z component
  */
-    public Vector3D (double xx,double yy,double zz) {
+    public Vector3D (double xx,double yy,double zz) 
+    {
 	x = xx;
 	y = yy;
 	z = zz;
@@ -60,7 +68,8 @@ public class Vector3D  {
  * 
  * @param original The vector to be copied
  */
-	public Vector3D (Vector3D  original) {
+	public Vector3D (Vector3D  original)
+	{
 		x = original.getX();
 		y = original.getY();
 		z = original.getZ();
@@ -69,7 +78,8 @@ public class Vector3D  {
  * 	
  * @return (x^2 + y^2 + z^2)
  */
-    public double magnitudeSquared() {
+    public double magnitudeSquared()
+    {
     	double mod2;
     	mod2 = Math.pow(this.getX(),2) + Math.pow(this.getY(),2) + Math.pow(this.getZ(),2);
     	return mod2;
@@ -78,14 +88,16 @@ public class Vector3D  {
  *     
  * @return sqrt(x^2 + y^2 + z^2)
  */
-    public double magnitude() {
+    public double magnitude()
+    {
     	return Math.sqrt(magnitudeSquared());
     }
  /**Returns the components of the vector.
   * 
   * @return (x,y,z)
   */
-    public String toString() {
+    public String toString()
+    	{
     	return "(" + x + ", " + y + ", " + z + ")";
     	}
     
@@ -95,7 +107,8 @@ public class Vector3D  {
   * @param b The scalar
   * @return a*b
   */
-	public Vector3D  scalarMultiply(double b) {
+	public Vector3D  scalarMultiply(double b)
+{
 		return new Vector3D (getX()*b, getY()*b, getZ()*b);
 	}
 /**Divides a vector by a scalar.
@@ -104,7 +117,8 @@ public class Vector3D  {
  * @param b The scalar
  * @return a/b
  */
-	public Vector3D  scalarDivide(double b) {
+	public Vector3D  scalarDivide(double b) 
+	{
 		return scalarMultiply(1/b);
 	}
 /**Adds two vectors.
@@ -113,7 +127,8 @@ public class Vector3D  {
  * @param b The first vector.
  * @return The sum, a+b
  */
-	public static Vector3D  vectorAddition(Vector3D  a, Vector3D  b) {
+	public static  Vector3D  vectorAddition(Vector3D  a, Vector3D  b) 
+	{
 		return new Vector3D (a.getX() + b.getX(), a.getY() + b.getY(), a.getZ() + b.getZ());
 	}
 /**Subtracts one vector from another.
@@ -122,7 +137,8 @@ public class Vector3D  {
  * @param b The second vector, which is subtracted from the first.
  * @return The difference, a-b
  */
-	public static Vector3D  vectorSubtraction(Vector3D  a, Vector3D  b) {
+	public static Vector3D  vectorSubtraction(Vector3D  a, Vector3D  b)
+	{
 		return vectorAddition(a,b.scalarMultiply(-1));
 	}
 	
@@ -132,7 +148,8 @@ public class Vector3D  {
  * @param b The second vector in the cross product.
  * @return axb
  */
-    public static Vector3D  crossProduct(Vector3D  a, Vector3D  b) {
+    public static Vector3D  crossProduct(Vector3D  a, Vector3D  b) 
+    {
     	return new Vector3D (a.getY()*b.getZ() - a.getZ()*b.getY(), a.getZ()*b.getX() - a.getX()*b.getZ(), a.getX()*b.getY() - a.getY()*b.getX());
     }
 /**Takes the dot product of two vectors.
@@ -141,13 +158,15 @@ public class Vector3D  {
  * @param b The second vector in the product.
  * @return a.b
  */
-    public static double dotProduct(Vector3D  a, Vector3D  b) {
+    public static double dotProduct(Vector3D  a, Vector3D  b)
+    {
     	double dot;
     	dot = (a.getX()*b.getX() + a.getY()*b.getY() + a.getZ()*b.getZ());
     	return dot;
     }
     	
-    public static boolean compareVectors(Vector3D a, Vector3D b) {
+    public static boolean compareVectors(Vector3D a, Vector3D b)
+    	{
     	if (a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ())
     		return true;
     	else 
