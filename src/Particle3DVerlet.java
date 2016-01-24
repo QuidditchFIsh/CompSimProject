@@ -46,13 +46,13 @@ public class Particle3DVerlet
         small.readScanner(in);
    
     	//Create a vector representing the gravitational force on the orbiting mass
-        Vector3 force = new Vector3();
+        Vector3D force = new Vector3D();
         //Create a vector representing the gravitational force on the orbiting mass after a timestep
-        Vector3 forceNew = new Vector3();
+        Vector3D forceNew = new Vector3D();
         //Calcualte the initial force
         force = small.GravitationalForce(small,big);
         //Create a vector representing the average of the gravitational forces before and after a timestep
-        Vector3 tempForce = new Vector3();
+        Vector3D tempForce = new Vector3D();
         
         
         for (int i=0;i<numTimeStep;i++) {
