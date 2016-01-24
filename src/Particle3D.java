@@ -1,7 +1,6 @@
 /** A class for particles moving in 3 dimensions, with methods for reading a particle from a scanner, returning kinetic energy, finding relative separation, and updating position and velocity.
  * @author A. Baker
  * @author S. Rigby
- * JAVADOC COMMENTS?
  */
  
 import java.util.Scanner;
@@ -9,18 +8,20 @@ import java.util.Scanner;
 public class Particle3D 
 {
  
-    // All of the values of these variables have been set to NaN to show that they have not been initalised yet.
-     Vector3D position = new Vector3D(Double.NaN, Double.NaN, Double.NaN);
-     Vector3D velocity = new Vector3D(Double.NaN, Double.NaN, Double.NaN);
+    /**These are the constructors for this class.
+     */
+    // All of the values of these variables have been set to NaN to show that they have not yet been initalised
+     Vector3D position;
+     Vector3D velocity;
      
      private double mass;
     
     // This String will hold the label of the particle in the simulation 
-    String Name = new String();
+    String name = new String();
     
+    // This constructor will initalise the Particle3D into the state where its position and velocity are both the zero vector
     public Particle3D()
     {
-        // This constructor will initalise the Particle3D into the state where its position and velocity are both the zero vector
         position.setX(0);
         position.setY(0);
         position.setZ(0);
@@ -29,23 +30,24 @@ public class Particle3D
         velocity.setZ(0);
     }
     
-    public Particle3D(double posX, double posY, double posZ, double velX, double velY, double velZ, double mass, String Name)
+    //This constructor will set the particle properties to the given arguments.
+    public Particle3D(Vector3D pos, Vector3D vel, double mass, String name)
     {
-        //This constructor will set the position and velocity vectors to the given values.
-        position.setX(posX);
-        position.setY(posY);
-        position.setZ(posZ);
+        position.setX(pos.getX());
+        position.setY(pos.getY());
+        position.setZ(pos.getZ());
         
-        velocity.setX(velX);
-        velocity.setY(velY);
-        velocity.setZ(velZ);
+        velocity.setX(vel.getX());
+        velocity.setY(vel.getY());
+        velocity.setZ(vel.getZ());
         
         this.mass=mass;
-        this.Name=Name;
+        this.name=name;
     }
     
-    //Set and Get methods for the above vectors and the properties of the particle. 
-    //Vector3D methods can be used as getters for components x, y, z.
+    /*Set and Get methods for the above vectors and the properties of the particle. 
+     *vector3D methods can be used as getters for components x, y, z.
+     */
     public Vector3D getPosition()
     {
         return position;
@@ -60,7 +62,6 @@ public class Particle3D
     {
         return mass;
     }
-    
     
     
    
@@ -80,20 +81,21 @@ public class Particle3D
     
     public void setMass(double mass)
     {
-        this.mass=mass;
+        this.mass = mass;
     }
     
-    public void setName(String Name)
+    public void setName(String name)
     {
-        this.Name = Name;
+        this.name = name;
     }
     
-    
+    /**General particle methods
+     */
     //toString Method to print out the states of the particle in a readable format, namely:
-    // Namely <label> <PosX> <PosY> <PosZ>
+    //<label> <PosX> <PosY> <PosZ>
     public String toString()
     {
-        return Name + " (" + position.getX() + ", " + position.getY() + ", " + position.getZ() + ")";
+        return name + position.getX() + ", " + position.getY() + ", " + position.getZ();
     }
     
   //Method to read parameters from an input file and assign them to a particle
@@ -106,9 +108,11 @@ public class Particle3D
         velocity.setY(input.nextDouble());
         velocity.setZ(input.nextDouble());
         mass=input.nextDouble();
-        Name = input.next();
+        name = input.next();
     }
-     
+   
+    /**Physical methods to represent the motion
+     */
     //Method to return a particle's kinetic energy
     public double kineticEnergy()
     {
@@ -118,7 +122,7 @@ public class Particle3D
     //Method to return the gravitational potential energy betwen two particles
     public static double GravitationalPotential(Particle3D big,Particle3D small)
     {
-        double R2 = small.InstanceDistanceBetweenVectors(big.getPosition());
+        double R2 = small.particleDistance(small,big);
         return - small.getMass()*big.getMass() * 1/R2;
     }
     
@@ -135,55 +139,32 @@ public class Particle3D
     }
     
     //Method to update the position to second order terms in the Taylor Expansion
-    public void secondOrderPositionUpdate(double dt,Vector3D force)
+    public void secondOrderPositionUpdate(double dt, Vector3D force)
     {
         position.addScaledVector(velocity, dt);
         position.addScaledVector(force, Math.pow(dt, 2)/(2*mass));         
     }
     
     //Static method to find the distance between two particles
-    public double distanceBetweenVectors(Vector3D pos1, Vector3D pos2)
+    public double particleDistance(Particle3D a, Particle3D b)
     {
-        double xDis = pos1.getX()-pos2.getX();
-        double yDis = pos1.getY()-pos2.getY();
-        double zDis = pos1.getZ()-pos2.getZ();
-         
-        return Math.sqrt(Math.pow(xDis, 2)+Math.pow(yDis, 2)+Math.pow(zDis, 2));
+    	return magnitude(vectorSubtraction(a.getPosition(),b.getPosition()));
     }
-    
-    //Instance method to find the distance between two particles
-    public double InstanceDistanceBetweenVectors(Vector3D pos1)
-    {
-        double xDis = pos1.getX()-position.getX();
-        double yDis = pos1.getY()-position.getY();
-        double zDis = pos1.getZ()-position.getZ();
-         
-        return Math.sqrt(Math.pow(xDis, 2)+Math.pow(yDis, 2)+Math.pow(zDis, 2));
-    }
-        
-    //Method to find the vector between two particles     
-    public Vector3D VectorDistance(Vector3D pos1,Vector3D pos2)
-    {
-        Vector3D Dis = new Vector3D();
-        Dis.setX(pos1.getX()-pos2.getX());
-        Dis.setY(pos1.getY()-pos2.getY());
-        Dis.setZ(pos1.getZ()-pos2.getZ());
-        return Dis;
-    }
- 
     
     
     //Method to return the gravitational force vector acting on the orbiting particle, labelled here as 'small', due to the central particle, labelled here as 'big'
-    public static Vector3D GravitationalForce(Particle3D small,Particle3D big)
+    public static Vector3D GravitationalForce(Particle3D small, Particle3D big)
     {
         //Calculates the modulus squared of the distance between the particles
-        double R2 = (small.InstanceDistanceBetweenVectors(big.getPosition()));
+        double R2 = small.particleDistance(small,big);
         R2=Math.pow(R2, 2);
+        Vector3D a = small.getPosition();
+        Vector3D b = big.getPosition();
         //Computes the unit vector between the particles
-        Vector3D rHat = small.VectorDistance(small.getPosition(), big.getPosition());
-        rHat.scalarMultiplication(1/Math.sqrt(R2));
+        Vector3D rHat = vectorSubtraction(a,b);
+        rHat.scalarMultiply(1/Math.sqrt(R2));
         //Computes the gravitational force vector by multiplying the unit vector by the magnitude		
-        rHat.scalarMultiplication((big.getMass()*small.getMass()*(-1/R2)));      
+        rHat.scalarMultiply((big.getMass()*small.getMass()*(-1/R2)));      
         return rHat;
     }
  
