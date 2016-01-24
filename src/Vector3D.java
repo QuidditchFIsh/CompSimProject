@@ -113,7 +113,7 @@ public class Vector3D  {
  * @param b The first vector.
  * @return The sum, a+b
  */
-	public static Vector3D  vectorAddition(Vector3D  a, Vector3D  b) {
+	public static  Vector3D  vectorAddition(Vector3D  a, Vector3D  b) {
 		return new Vector3D (a.getX() + b.getX(), a.getY() + b.getY(), a.getZ() + b.getZ());
 	}
 /**Subtracts one vector from another.

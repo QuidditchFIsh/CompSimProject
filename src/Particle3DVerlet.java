@@ -63,8 +63,8 @@ public class Particle3DVerlet
         forceNew =small.GravitationalForce(small,big);
         //Update the velocity using the average of the forces before and after the timestep, which is calculated in a temporary vector tempForce
         tempForce = force;
-        tempForce.addVector(forceNew);
-        tempForce.scalarMultiplication(0.5);
+        tempForce=Vector3D.vectorAddition(forceNew,tempForce);
+        tempForce.scalarMultiply(0.5);
         small.velocityUpdate(dt,tempForce); 
         //Update time
         t=t+dt;
