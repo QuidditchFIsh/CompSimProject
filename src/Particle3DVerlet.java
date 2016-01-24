@@ -20,7 +20,8 @@ public class Particle3DVerlet
     static double Energy = 0, Energypre = 0, diff = 0;
     //Energy and Energypre are used to calculate the difference in energy between two consecutve time steps.
 
-    public static void main(String[] argv) throws IOException {
+    public static void main(String[] argv) throws IOException
+    {
 
      //Identify input file from command line
 	File file = new File(argv[0]);
