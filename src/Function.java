@@ -24,4 +24,3 @@ public class Function {
 			position[i].secondOrderPositionUpdate(dt, totalForce);
 		}
 	}
-}
