@@ -16,7 +16,8 @@ public class Particle3DArrayVerlet
 		particleArray[i].setVelocity(input.nextDouble(), input.nextDouble(), input.nextDouble());
 		particleArray[i].setMass(input.nextDouble());
 		particleArray[i].setName(input.next());
-blah lah  alh#
+		System.out.println("fuck");
+
 		}
 		
 		
