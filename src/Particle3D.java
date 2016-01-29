@@ -19,7 +19,7 @@ public class Particle3D
     String name = new String();
     
     // This constructor will initalise the Particle3D into the state where its position and velocity are both the zero vector
-    public Particle3D()
+    public Particle3D(String name)
     {
         position.setX(0);
         position.setY(0);
@@ -27,6 +27,7 @@ public class Particle3D
         velocity.setX(0);
         velocity.setY(0);
         velocity.setZ(0);
+        this.name=name;
     }
     
     //This constructor will set the particle properties to the given arguments.

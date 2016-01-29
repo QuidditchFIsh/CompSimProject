@@ -37,8 +37,8 @@ public class Particle3DVerlet
 	PrintWriter output3 = new PrintWriter(new FileWriter(outfile3));
     	
     	//Create particles representing the central and orbiting particles respectively
-        Particle3D big = new Particle3D();
-        Particle3D small = new Particle3D();
+        Particle3D big = new Particle3D("big");
+        Particle3D small = new Particle3D("small");
 
         //Set the mass of the central particle to the mass given above. Position and velocity are initialised to zero vectors
         big.setMass(massBig);
