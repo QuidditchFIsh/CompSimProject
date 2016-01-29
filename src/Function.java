@@ -21,6 +21,7 @@ public class Function {
 	}
 	*/
 			Vector3D totalForce = new Vector3D();
+			//Loop over given row in force matrix (i.e. all forces acting on one particle) and sum using vector addition
 			for (int j = 0; j < forceArray.length; j++) {
 				totalForce = Vector3D.vectorAddition(totalForce, forceArray[i][j]);
 			}
@@ -53,10 +54,12 @@ public class Function {
 	public double arrayTotalEnergy(Particle3D[] energy) {
 		int i;
 		double totalKinetic = 0.0;
+		//Loop over particles and sum their kinetic energies
 		for (i = 0; i < energy.length; i++) {
 			totalKinetic = totalKinetic + energy[i].kineticEnergy();
 		}
 		double totalGravitational = 0.0;
+		//Loop over pairs of particles and sum their potential energies
 		for (int j = 0; j < energy.length; j++) {
 			for (int k = j + 1; k < energy.length; k++) {
 				double potential = Particle3D.GravitationalPotential(energy[j],energy[k]);
