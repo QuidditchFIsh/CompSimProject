@@ -3,7 +3,7 @@ public class Function {
 
 	
 	public static Vector3D forceSum(Vector3D[][] forceArray, int i) {
-				//Create a Vector3D representing total force on a particle due to all others
+			/**	//Create a Vector3D representing total force on a particle due to all others
 				Vector3D totalForce = new Vector3D();
 				//Create a Vector3D array to keep a running total of the sum of the forces: the final element represents the total force on one particle
 				Vector3D tempForce[] = new Vector3D[forceArray.length];
@@ -19,7 +19,13 @@ public class Function {
 	}
 	return tempForce[forceArray.length];
 	}
-	
+	*/
+			Vector3D totalForce = new Vector3D();
+			for (int j = 0; j < forceArray.length; j++) {
+				totalForce = Vector3D.vectorAddition(totalForce, forceArray[i][j]);
+			}
+			return totalForce;
+	}
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[][] forceArray) {
 		
 		int i;
@@ -46,20 +52,19 @@ public class Function {
 	
 	public double arrayTotalEnergy(Particle3D[] energy) {
 		int i;
-		double totalKinetic;
-		double[] tempKinetic = new double[energy.length];
-		tempKinetic[0] = energy[0].kineticEnergy();
-		for (i = 0; i < energy.length - 1; i++) {
-			totalKinetic = tempKinetic[i] + energy[i+1].kineticEnergy();
-			tempKinetic[i+1] = totalKinetic;
+		double totalKinetic = 0.0;
+		for (i = 0; i < energy.length; i++) {
+			totalKinetic = totalKinetic + energy[i].kineticEnergy();
 		}
-		//Only returning this to stop eclipse from complaining
-		return tempKinetic[energy.length];
+		double totalGravitational = 0.0;
+		for (int j = 0; j < energy.length; j++) {
+			for (int k = j + 1; k < energy.length; k++) {
+				double potential = Particle3D.GravitationalPotential(energy[j],energy[k]);
+				totalGravitational = totalGravitational + potential;
+			}
+		}
+		return totalKinetic + totalGravitational;
+		
 	}
-	
-	
-	
-	
-	
-	
+
 }
