@@ -9,6 +9,7 @@ public class Particle3DArrayVerlet
 		// Identify a file from the comand line and use it to create the particles.
 		File file = new File(argv[0]);
 		Scanner input = new Scanner(file);
+		// input the data from an input file 
 		for (int i=0;i<noObjects;i++)
 		{
 		particleArray[i].setPosition(input.nextDouble(), input.nextDouble(), input.nextDouble());
@@ -20,19 +21,7 @@ public class Particle3DArrayVerlet
 		
 		
 	}
-	public static void positionArrayUpdate()
-	{
-		
-	}
-	public static void velocityArrayUpdate()
-	{
 	
-		
-	}
-	public static void forceUpdate()
-	{
-		
-	}
 	
 
 }
