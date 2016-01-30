@@ -70,4 +70,19 @@ public class Function {
 		
 	}
 
+	public void arrayUpdateForce(Particle3D[] particles, Vector3D[][] forceArray) {
+		Vector3D[][] tempForceArray = new Vector3D[forceArray.length][forceArray.length];
+		for (int i = 0; i < forceArray.length; i++) {
+			for (int j = i + 1; j < forceArray.length; j++) {
+				tempForceArray[i][j] = Particle3D.GravitationalForce(particles[i],particles[j]);
+				forceArray[i][j] = Vector3D.vectorAddition(forceArray[i][j], tempForceArray[i][j]);
+				forceArray[i][j] = forceArray[i][j].scalarDivide(2);
+			}
+			for (int k = 0; k < i; k++) {
+				forceArray[i][k] = forceArray[k][i].scalarMultiply(-1);
+			}
+		}
+
+	}
+	
 }
