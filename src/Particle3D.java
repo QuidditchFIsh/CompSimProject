@@ -95,7 +95,7 @@ public class Particle3D
     //<label> <PosX> <PosY> <PosZ>
     public String toString()
     {
-        return name + position.getX() + ", " + position.getY() + ", " + position.getZ();
+        return name + position.getX() + " " + position.getY() + " " + position.getZ();
     }
     
   //Method to read parameters from an input file and assign them to a particle

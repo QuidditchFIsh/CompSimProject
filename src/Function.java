@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 
 public class Function {
 
@@ -51,7 +52,7 @@ public class Function {
 		}
 	}
 	
-	public double arrayTotalEnergy(Particle3D[] energy) {
+	public static double arrayTotalEnergy(Particle3D[] energy) {
 		int i;
 		double totalKinetic = 0.0;
 		//Loop over particles and sum their kinetic energies
@@ -70,7 +71,8 @@ public class Function {
 		
 	}
 
-	public void arrayUpdateForce(Particle3D[] particles, Vector3D[][] forceArray) {
+	public static void arrayUpdateForce(Particle3D[] particles, Vector3D[][] forceArray)
+	{
 		Vector3D[][] tempForceArray = new Vector3D[forceArray.length][forceArray.length];
 		for (int i = 0; i < forceArray.length; i++) {
 			for (int j = i + 1; j < forceArray.length; j++) {
@@ -83,6 +85,16 @@ public class Function {
 			}
 		}
 
+	}
+	public static void outputVMD(Particle3D[] particleArray,PrintWriter output1, int i)
+	{
+		int n = particleArray.length;
+		output1.printf("%f",n);
+		output1.printf("Point = %d",i);
+		for(int j=0;j<n;j++)
+		{
+			output1.print(particleArray[j].toString());
+		}
 	}
 	
 }
