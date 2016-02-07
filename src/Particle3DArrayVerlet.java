@@ -33,19 +33,21 @@ public class Particle3DArrayVerlet
 		
 		}
 		// set the particles using the input
-		Vector3D[][] force = new Vector3D[n][n];
+		Vector3D[] force = new Vector3D[n];
+		//CHANGED USED TO BE 2D ARRAY NOW IS 1D ARRAY AS SPECIFIED BY FEEDBACK
 		force = null;
 		//create 3 vector3D arrays for the Verlet time intergrator
 		double [][] energyArray = new double[iterations][n+1];
 		//this array will store the energy of the individual particles and the total energy
 		// of the system so it can be outputted and evaluated
-		Function.arrayUpdateForce(particleArray,force);
+		//HAVE ANOTHER THINK ABOUT THIS
+		Function.arrayForceUpdate2(particleArray,force);
 		// starts the algorithm off by calculating the forces on the planets at the starts
 		for ( int i=0 ;i< iterations;i++)
 		{
 			Function.arrayUpdatePosition(particleArray, dt, force);
 			// update all the positions of the particle arra using functions from the function class
-			Function.arrayUpdateForce(particleArray,force);
+			Function.arrayForceUpdate2(particleArray,force);
 			// updates the force array using the verlet algorithm
 			Function.arrayUpdateVelocity(particleArray, dt, force);
 			//updates the velocity of the particles.

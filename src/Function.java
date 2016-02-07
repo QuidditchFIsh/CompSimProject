@@ -2,9 +2,10 @@ import java.io.PrintWriter;
 
 public class Function {
 
+	//THE BELOW CODE IS REDUDENT NOW WE ARE USING 1D ARRAYS
 	
-	public static Vector3D forceSum(Vector3D[][] forceArray, int i) {
-			/**	//Create a Vector3D representing total force on a particle due to all others
+	/*public static Vector3D forceSum(Vector3D[][] forceArray, int i) {
+				//Create a Vector3D representing total force on a particle due to all others
 				Vector3D totalForce = new Vector3D();
 				//Create a Vector3D array to keep a running total of the sum of the forces: the final element represents the total force on one particle
 				Vector3D tempForce[] = new Vector3D[forceArray.length];
@@ -20,7 +21,7 @@ public class Function {
 	}
 	return tempForce[forceArray.length];
 	}
-	*/
+	
 			Vector3D totalForce = new Vector3D();
 			//Loop over given row in force matrix (i.e. all forces acting on one particle) and sum using vector addition
 			for (int j = 0; j < forceArray.length; j++) {
@@ -28,27 +29,26 @@ public class Function {
 			}
 			return totalForce;
 	}
-	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[][] forceArray) {
+*/
+	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray) {
 		
 		int i;
 		Vector3D force = new Vector3D();
 		//Loop over particles and update position of each
-		for (i = 0; i < forceArray[0].length; i++) {
-			force = forceSum(forceArray, i);
+		for (i = 0; i < forceArray.length; i++) {
+			//force = forceSum(forceArray, i);
 		
-			position[i].secondOrderPositionUpdate(dt, force);
+			position[i].secondOrderPositionUpdate(dt, forceArray[i]);
 		}
 	}
 	
-	public static void arrayUpdateVelocity(Particle3D[] velocity, double dt, Vector3D[][] forceArray) {
+	public static void arrayUpdateVelocity(Particle3D[] velocity, double dt, Vector3D[] forceArray) {
 		
-		int i;
-		Vector3D force = new Vector3D();
+		
 		//Loop over particles and update velocity of each
-		for (i = 0; i < forceArray[0].length; i++) {
-			force = forceSum(forceArray, i);
-		
-			velocity[i].velocityUpdate(dt, force);
+		for (int i = 0; i < forceArray.length; i++) 
+		{
+			velocity[i].velocityUpdate(dt, forceArray[i]);
 		}
 	}
 	
@@ -95,6 +95,24 @@ public class Function {
 		{
 			output1.print(particleArray[j].toString());
 		}
+	}
+	public static void arrayForceUpdate2(Particle3D[] particle, Vector3D[] forceArray)
+	{
+		
+		Vector3D[] tempForceArray = new Vector3D[forceArray.length];
+		for (int i=0; i<forceArray.length;i++)
+			for ( int j=0; j<forceArray.length;j++)
+				
+			{
+				if ( i!= j)
+				{
+					tempForceArray[i] = Particle3D.GravitationalForce(particle[i], particle[j]);
+					forceArray[i] = Vector3D.vectorAddition(forceArray[i],tempForceArray[i] );
+					forceArray[i] = forceArray[i].scalarDivide(2);
+				}
+			}
+			
+		
 	}
 	
 }
