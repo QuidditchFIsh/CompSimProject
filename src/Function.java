@@ -89,12 +89,15 @@ public class Function {
 	public static void outputVMD(Particle3D[] particleArray,PrintWriter output1, int i)
 	{
 		int n = particleArray.length;
-		output1.printf("%f",n);
-		output1.printf("Point = %d",i);
-		for(int j=0;j<n;j++)
-		{
-			output1.print(particleArray[j].toString());
-		}
+		
+		
+			output1.printf("%d \n",n);
+			output1.printf("Point = %d \n",i);
+			for ( int k=0;k<n;i++)
+			{
+				output1.print(particleArray[k].position);
+			}
+		
 	}
 	public static void arrayForceUpdate2(Particle3D[] particle, Vector3D[] forceArray)
 	{
@@ -106,9 +109,11 @@ public class Function {
 			{
 				if ( i!= j)
 				{
-					tempForceArray[i] = Particle3D.GravitationalForce(particle[i], particle[j]);
-					forceArray[i] = Vector3D.vectorAddition(forceArray[i],tempForceArray[i] );
-					forceArray[i] = forceArray[i].scalarDivide(2);
+					
+					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[i], particle[j]));
+					
+					forceArray[i]= (Vector3D.vectorAddition(forceArray[i],tempForceArray[i] ));
+					forceArray[i]= (forceArray[i].scalarDivide(2));
 				}
 			}
 			

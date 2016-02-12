@@ -10,8 +10,8 @@ public class Particle3D
  
     /**These are the constructors for this class.
      */
-     Vector3D position;
-     Vector3D velocity;
+     Vector3D position=new Vector3D();
+     Vector3D velocity=new Vector3D();
      
      private double mass;
     
@@ -33,7 +33,7 @@ public class Particle3D
     //This constructor will set the particle properties to the given arguments.
     public Particle3D(Vector3D pos, Vector3D vel, double mass, String name)
     {
-        position.setX(pos.getX());
+       
         position.setY(pos.getY());
         position.setZ(pos.getZ());
         
@@ -44,7 +44,20 @@ public class Particle3D
         this.mass=mass;
         this.name=name;
     }
-    
+    public Particle3D(Particle3D copy)
+    {
+    	position.setX(copy.position.getX());
+    	position.setY(copy.position.getY());
+    	position.setZ(copy.position.getZ());
+        
+    	velocity.setX(copy.velocity.getX());
+        velocity.setY(copy.velocity.getY());
+        velocity.setZ(copy.velocity.getZ());
+        
+        mass = copy.getMass();
+        name = copy.name;
+    }
+
     /*Set and Get methods for the above vectors and the properties of the particle. 
      *vector3D methods can be used as getters for components x, y, z.
      */
@@ -95,7 +108,7 @@ public class Particle3D
     //<label> <PosX> <PosY> <PosZ>
     public String toString()
     {
-        return name + position.getX() + " " + position.getY() + " " + position.getZ();
+        return name + " " + position.getX() + " " + position.getY() + " " + position.getZ() + " ";
     }
     
   //Method to read parameters from an input file and assign them to a particle

@@ -18,24 +18,38 @@ public class Particle3DArrayVerlet
 		PrintWriter output2 = new PrintWriter(new FileWriter(outfile2));
 		PrintWriter output3 = new PrintWriter(new FileWriter(outfile3));
 		// creates the three out put files for this program
-		int n = input.nextInt(), dt = input.nextInt(), iterations = input.nextInt();
+		int n = input.nextInt();
+		double dt = input.nextDouble();
+		int iterations = input.nextInt();
 		// n will be the number of particles we are dealing with in this simulation
 		// dt is the the time step and iterations is the number of iterations which this 
 		// simulation will run for
 		Particle3D[] particleArray = new Particle3D[n];
-		// create an array of particles
+		Particle3D hemp = new Particle3D("help");
+		// create an array of particle
+		Vector3D initPos= new Vector3D();
+		Vector3D initVel = new Vector3D();
 		for (int i=0;i<particleArray.length;i++)
 		{
-		particleArray[i].setPosition(input.nextDouble(), input.nextDouble(), input.nextDouble());
-		particleArray[i].setVelocity(input.nextDouble(), input.nextDouble(), input.nextDouble());
-		particleArray[i].setMass(input.nextDouble());
-		particleArray[i].setName(input.next());
-		
+		initPos.setX(input.nextDouble());
+		initPos.setY(input.nextDouble());
+		initPos.setZ(input.nextDouble());
+		initVel.setX(input.nextDouble());
+		initVel.setY(input.nextDouble());
+		initVel.setZ(input.nextDouble());
+		Particle3D temp = new Particle3D(initPos,initVel,input.nextDouble(),input.next());
+		particleArray[i]= new Particle3D(temp);
+		System.out.println(particleArray[i]);
+	     
 		}
 		// set the particles using the input
 		Vector3D[] force = new Vector3D[n];
 		//CHANGED USED TO BE 2D ARRAY NOW IS 1D ARRAY AS SPECIFIED BY FEEDBACK
-		force = null;
+		for (int i=0; i<n;i++)
+		{
+			force[i] = new Vector3D();
+		}
+		// initalise the force array
 		//create 3 vector3D arrays for the Verlet time intergrator
 		double [][] energyArray = new double[iterations][n+1];
 		//this array will store the energy of the individual particles and the total energy

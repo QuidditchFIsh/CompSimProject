@@ -9,9 +9,9 @@ public class Vector3D
 {
 	
 
-    private double x;
-    private double y;
-    private double z;
+    private double x=0;
+    private double y=0;
+    private double z=0;
 
 /**Returns the values of each of the components of the vector.
  */
