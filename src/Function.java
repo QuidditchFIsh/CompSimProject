@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.lang.Math;
 
 public class Function {
 
@@ -139,4 +140,16 @@ public class Function {
 		}
 		return ap[0];
 	}
+	// Define arbitrary small delta as error in angle; double iteration represents number of iterations which have passed, i.e. if looping over i, iterations = i in ith loop
+	//Returns -1 if year is not completed
+	public static double yearLength(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double dt, double iteration, double delta) {
+		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
+		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
+			return iteration*dt;
+		}
+		else return -1.0;
+		}
+	
 }
