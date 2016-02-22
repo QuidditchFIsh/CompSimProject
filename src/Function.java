@@ -119,5 +119,24 @@ public class Function {
 			
 		
 	}
+	//Takes in the initial distance between Sun and body- use initial conditions?
+	public static double perihelion(double initialDistance, Particle3D Sun, Particle3D orbit) {
+		double[] peri = new double[2];
+		peri[0] = initialDistance;
+		peri[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
+		if (peri[1] < peri[0]) {
+			peri[0] = peri[1];
+		}
+		return peri[0];
+	}
 	
+	public static double aphelion(double initialDistance, Particle3D Sun, Particle3D orbit) {
+		double[] ap = new double[2];
+		ap[0] = initialDistance;
+		ap[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
+		if (ap[1] > ap[0]) {
+			ap[0] = ap[1];
+		}
+		return ap[0];
+	}
 }
