@@ -56,6 +56,8 @@ public class Particle3DArrayVerlet
 		// of the system so it can be outputted and evaluated
 		//HAVE ANOTHER THINK ABOUT THIS
 		Function.arrayForceUpdate2(particleArray,force);
+		output2.println(Function.arrayTotalEnergy(particleArray));
+		double initalEnergy = Function.arrayTotalEnergy(particleArray);
 		// starts the algorithm off by calculating the forces on the planets at the starts
 		for ( int i=0 ;i< iterations;i++)
 		{
@@ -68,20 +70,9 @@ public class Particle3DArrayVerlet
 			Function.outputVMD( particleArray, output1,i);
 			// THis method will write the results to the output file output1 in a format
 			//WHich can be read by VMD.
-			for (int j=0;j<n;j++)
-			{
-				energyArray[i][j] = particleArray[j].kineticEnergy();
-			}
-			for (int j=0;j<n; j++)
-				for(int k=0;k<n ; k++)
-				{
-					if( j!= k)
-					{
-						energyArray[i][j] = Particle3D.GravitationalPotential(particleArray[j], particleArray[k]);
-					}
-				}
+			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray));
+			// output the difference in energy.
 			
-		}
 	
 		
 		

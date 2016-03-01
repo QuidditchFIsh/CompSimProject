@@ -33,10 +33,10 @@ public class Function {
 */
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray) {
 		
-		int i;
-		Vector3D force = new Vector3D();
+		
 		//Loop over particles and update position of each
-		for (i = 0; i < forceArray.length; i++) {
+		for (int i = 0; i < forceArray.length; i++)
+		{
 			//force = forceSum(forceArray, i);
 		
 			position[i].secondOrderPositionUpdate(dt, forceArray[i]);
@@ -53,25 +53,30 @@ public class Function {
 		}
 	}
 	
-	public static double arrayTotalEnergy(Particle3D[] energy) {
-		int i;
-		double totalKinetic = 0.0;
+	public static double arrayTotalEnergy(Particle3D[] energy)
+	{
+		
+		double totalKinetic = 0.0, totalGravitational = 0.0;
 		//Loop over particles and sum their kinetic energies
-		for (i = 0; i < energy.length; i++) {
-			totalKinetic = totalKinetic + energy[i].kineticEnergy();
+		for (int i = 0; i < energy.length; i++) 
+		{
+			totalKinetic += energy[i].kineticEnergy();
 		}
-		double totalGravitational = 0.0;
+		
 		//Loop over pairs of particles and sum their potential energies
-		for (int j = 0; j < energy.length; j++) {
-			for (int k = j + 1; k < energy.length; k++) {
+		for (int j = 0; j < energy.length; j++)
+		{
+			for (int k = j + 1; k < energy.length; k++)
+			{
 				double potential = Particle3D.GravitationalPotential(energy[j],energy[k]);
-				totalGravitational = totalGravitational + potential;
+				totalGravitational += potential;
 			}
 		}
 		return totalKinetic + totalGravitational;
 		
 	}
-
+/*
+ *not using 2d array anymore so class not needed
 	public static void arrayUpdateForce(Particle3D[] particles, Vector3D[][] forceArray)
 	{
 		Vector3D[][] tempForceArray = new Vector3D[forceArray.length][forceArray.length];
@@ -87,6 +92,7 @@ public class Function {
 		}
 
 	}
+	*/
 	public static void outputVMD(Particle3D[] particleArray,PrintWriter output1, int i)
 	{
 		int n = particleArray.length;
@@ -125,7 +131,8 @@ public class Function {
 		double[] peri = new double[2];
 		peri[0] = initialDistance;
 		peri[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
-		if (peri[1] < peri[0]) {
+		if (peri[1] < peri[0]) 
+		{
 			peri[0] = peri[1];
 		}
 		return peri[0];
@@ -135,7 +142,8 @@ public class Function {
 		double[] ap = new double[2];
 		ap[0] = initialDistance;
 		ap[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
-		if (ap[1] > ap[0]) {
+		if (ap[1] > ap[0])
+		{
 			ap[0] = ap[1];
 		}
 		return ap[0];
