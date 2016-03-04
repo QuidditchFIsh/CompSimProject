@@ -162,7 +162,7 @@ public class Function {
 		}
 		return counter;
 		}
-	
+	//I can't work out how to push it for some reason
 	public static double partialYear(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit) {
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
