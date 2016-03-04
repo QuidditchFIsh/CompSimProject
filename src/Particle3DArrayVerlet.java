@@ -6,6 +6,8 @@ public class Particle3DArrayVerlet
 
 	public static void main(String[] argv) throws IOException 
 	{
+		//Create integer for orbit counter
+		int counter = 0;
 		// Identify a file from the comand line and use it to create the particles.
 		File file = new File(argv[0]);
 		Scanner input = new Scanner(file);
@@ -25,6 +27,8 @@ public class Particle3DArrayVerlet
 		// dt is the the time step and iterations is the number of iterations which this 
 		// simulation will run for
 		Particle3D[] particleArray = new Particle3D[n];
+		/** Nye, what is this for?
+		 */
 		Particle3D hemp = new Particle3D("help");
 		// create an array of particle
 		Vector3D initPos= new Vector3D();
@@ -80,11 +84,12 @@ public class Particle3DArrayVerlet
 						energyArray[i][j] = Particle3D.GravitationalPotential(particleArray[j], particleArray[k]);
 					}
 				}
-			
+			//Put total year counter here
 		}
+	//Put partial orbit counter here
+	//Then sum total and partial
+		
 	
-		
-		
 		
 		
 		
