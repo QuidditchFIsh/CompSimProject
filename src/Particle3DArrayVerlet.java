@@ -59,6 +59,9 @@ public class Particle3DArrayVerlet
 		output2.println(Function.arrayTotalEnergy(particleArray));
 		double initalEnergy = Function.arrayTotalEnergy(particleArray);
 		// starts the algorithm off by calculating the forces on the planets at the starts
+		Function.adjustMomentumOfSystem(particleArray);
+		//To stop the COM of the simulation from drifting we have to adjust the COM of the system 
+		//pretty sure this only has to be done once NEED TO CHECK!!!!
 		for ( int i=0 ;i< iterations;i++)
 		{
 			Function.arrayUpdatePosition(particleArray, dt, force);
