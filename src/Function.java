@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.lang.Math;
 
 public class Function {
 
@@ -33,7 +34,6 @@ public class Function {
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray) {
 		
 		int i;
-		Vector3D force = new Vector3D();
 		//Loop over particles and update position of each
 		for (i = 0; i < forceArray.length; i++) {
 			//force = forceSum(forceArray, i);
@@ -115,5 +115,71 @@ public class Function {
 			
 		
 	}
+	//Takes in the initial distance between Sun and body- use initial conditions?
+	public static double perihelion(double initialDistance, Particle3D Sun, Particle3D orbit) 
+	{
+		double[] peri = new double[2];
+		peri[0] = initialDistance;
+		peri[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
+		if (peri[1] < peri[0]) {
+			peri[0] = peri[1];
+		}
+		return peri[0];
+	}
 	
+	public static double aphelion(double initialDistance, Particle3D Sun, Particle3D orbit)
+	{
+		double[] ap = new double[2];
+		ap[0] = initialDistance;
+		ap[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
+		if (ap[1] > ap[0]) {
+			ap[0] = ap[1];
+		}
+		return ap[0];
+	}
+	// Define arbitrary small delta as error in angle; double iteration represents number of iterations which have passed, i.e. if looping over i, iterations = i in ith loop
+	//Returns -1 if year is not completed
+	public static double yearLength(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double dt, double iteration, double delta) {
+		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
+		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		//Divide the dot product by the magnitudes of the vectors to give cosine of the angle between them
+		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
+			return iteration*dt;
+		}
+		else return -1.0;
+		}
+	
+	public static int totalYearCounter(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double delta, int counter) 
+	{
+		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
+		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
+			counter += 1;
+		}
+		return counter;
+		}
+	//I can't work out how to push it for some reason
+	public static double partialYear(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit) 
+	{
+		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
+		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		double angle = Math.acos(dotProduct);
+		return angle;
+	}
+	public static Vector3D momentumOfSystem (Particle3D[] particle3DArray)
+	{
+		Vector3D totalMomentum = new Vector3D();
+		for(int i =0;i<particle3DArray.length;i++)
+		{
+			totalMomentum = Vector3D.vectorAddition(totalMomentum, particle3DArray[i].getVelocity().scalarMultiply(particle3DArray[i].getMass()));
+		}
+		return totalMomentum;
+	}
+	{
+		
+	}
 }
+	
