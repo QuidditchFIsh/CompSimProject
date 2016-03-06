@@ -88,15 +88,11 @@ public class Function {
 	}
 	public static void outputVMD(Particle3D[] particleArray,PrintWriter output1, int i)
 	{
-		int n = particleArray.length;
 		
-		
-			output1.printf("%d \n",n);
-			output1.printf("Point = %d \n",i);
-			for ( int k=0;k<n;i++)
-			{
-				output1.print(particleArray[k].position);
-			}
+			output1.printf("%d \nPoint = %d \n",particleArray.length,i);
+			for (int k=0;k<particleArray.length;k++)
+				output1.printf("%s %f %f %f \n",particleArray[k].name + Integer.toString(i),particleArray[k].position.getX(),particleArray[k].position.getY(),particleArray[k].position.getZ());
+			
 		
 	}
 	public static void arrayForceUpdate2(Particle3D[] particle, Vector3D[] forceArray)

@@ -4,7 +4,7 @@ import java.io.*;
 public class Particle3DArrayVerlet 
 {
 
-	public static void main(String[] argv) throws IOException 
+	public static void main(String[] argv) throws IOException,FileNotFoundException 
 	{
 		// Identify a file from the comand line and use it to create the particles.
 		File file = new File(argv[0]);
@@ -82,6 +82,9 @@ public class Particle3DArrayVerlet
 				}
 			
 		}
+		output1.close();
+		output2.close();
+		output3.close();
 	
 		
 		

@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>HomeTest.In.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Documents/GitHub/CompSimProject/HomeTest.In.txt</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
