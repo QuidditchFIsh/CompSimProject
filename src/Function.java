@@ -169,14 +169,21 @@ public class Function {
 		double angle = Math.acos(dotProduct);
 		return angle;
 	}
-	public static Vector3D momentumOfSystem (Particle3D[] particle3DArray)
+	public static void adjustMomentumOfSystem (Particle3D[] particle3DArray)
 	{
 		Vector3D totalMomentum = new Vector3D();
+		double totalMass=0;
 		for(int i =0;i<particle3DArray.length;i++)
 		{
+			totalMass += particle3DArray[i].getMass();
 			totalMomentum = Vector3D.vectorAddition(totalMomentum, particle3DArray[i].getVelocity().scalarMultiply(particle3DArray[i].getMass()));
 		}
-		return totalMomentum;
+		
+		for(int i=0;i<particle3DArray.length;i++)
+		{
+			particle3DArray[i].velocity = new Vector3D(Vector3D.vectorSubtraction(particle3DArray[i].velocity,totalMomentum.scalarDivide(totalMass)));
+		}
+		
 	}
 	{
 		
