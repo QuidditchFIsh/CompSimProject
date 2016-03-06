@@ -145,6 +145,7 @@ public class Function {
 	public static double yearLength(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double dt, double iteration, double delta) {
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		//Divide the dot product by the magnitudes of the vectors to give cosine of the angle between them
 		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
 		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
 			return iteration*dt;
@@ -152,4 +153,22 @@ public class Function {
 		else return -1.0;
 		}
 	
+	public static int totalYearCounter(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double delta, int counter) {
+		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
+		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
+			counter += 1;
+		}
+		return counter;
+		}
+	//I can't work out how to push it for some reason
+	public static double partialYear(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit) {
+		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
+		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
+		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		double angle = Math.acos(dotProduct);
+		return angle;
+	}
 }
+	
