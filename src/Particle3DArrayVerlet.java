@@ -25,6 +25,11 @@ public class Particle3DArrayVerlet
 		// dt is the the time step and iterations is the number of iterations which this 
 		// simulation will run for
 		Particle3D[] particleArray = new Particle3D[n];
+		//Don't want to include Sun so length of counter array is one less than length of particle array
+		int[] counter = new int[particleArray.length - 1];
+		//Just for now set delta = 0.01
+		double delta = 0.01;
+		//What is this? What's it for?
 		Particle3D hemp = new Particle3D("help");
 		// create an array of particle
 		Vector3D initPos= new Vector3D();
@@ -40,7 +45,7 @@ public class Particle3DArrayVerlet
 		Particle3D temp = new Particle3D(initPos,initVel,input.nextDouble(),input.next());
 		particleArray[i]= new Particle3D(temp);
 		System.out.println(particleArray[i]);
-	     
+
 		}
 		// set the particles using the input
 		Vector3D[] force = new Vector3D[n];
@@ -62,26 +67,36 @@ public class Particle3DArrayVerlet
 		Function.adjustMomentumOfSystem(particleArray);
 		//To stop the COM of the simulation from drifting we have to adjust the COM of the system 
 		//pretty sure this only has to be done once NEED TO CHECK!!!!
-		for ( int i=0 ;i< iterations;i++)
+		for ( int i=0 ;i < iterations;i++)
 		{
 			Function.arrayUpdatePosition(particleArray, dt, force);
-			// update all the positions of the particle arra using functions from the function class
+			// update all the positions of the particle array using functions from the function class
 			Function.arrayForceUpdate2(particleArray,force);
 			// updates the force array using the verlet algorithm
 			Function.arrayUpdateVelocity(particleArray, dt, force);
 			//updates the velocity of the particles.
 			Function.outputVMD( particleArray, output1,i);
-			// THis method will write the results to the output file output1 in a format
-			//WHich can be read by VMD.
+			// This method will write the results to the output file output1 in a format
+			//Which can be read by VMD.
 			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray));
 			// output the difference in energy.	
 	
-		
+			//Start from 1 because we don't want to measure the length of the Sun's year
+			//YEAH BUDDY
+			for (int j = 1; j < particleArray.length; j++)
+			{
+				Function.totalYearCounter(initPos, particleArray[0], particleArray[i], delta, counter[i]);
+			}
 		output1.close();
 		output2.close();
-		output3.close();
 		}
-	
+		double counterArray[] = new double[particleArray.length];
+		//Start from 1 in particle array to deal with Sun
+		for (int i = 0; i < particleArray.length; i++) {
+			counterArray[i] = (double)counter[i] + Function.partialYear(initPos, particleArray[0], particleArray[i+1]);
+			output3.println(counterArray[i]);
+		}
+		output3.close();
 		
 		
 		

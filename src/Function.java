@@ -34,6 +34,7 @@ public class Function {
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray) {
 		
 		int i;
+		Vector3D force = new Vector3D();
 		//Loop over particles and update position of each
 		for (i = 0; i < forceArray.length; i++) {
 			//force = forceSum(forceArray, i);
@@ -88,11 +89,15 @@ public class Function {
 	}
 	public static void outputVMD(Particle3D[] particleArray,PrintWriter output1, int i)
 	{
+		int n = particleArray.length;
 		
-			output1.printf("%d \nPoint = %d \n",particleArray.length,i);
-			for (int k=0;k<particleArray.length;k++)
-				output1.printf("%s %f %f %f \n",particleArray[k].name + Integer.toString(i),particleArray[k].position.getX(),particleArray[k].position.getY(),particleArray[k].position.getZ());
-			
+		
+			output1.printf("%d \n",n);
+			output1.printf("Point = %d \n",i);
+			for ( int k=0;k<n;i++)
+			{
+				output1.print(particleArray[k].position);
+			}
 		
 	}
 	public static void arrayForceUpdate2(Particle3D[] particle, Vector3D[] forceArray)
@@ -116,8 +121,7 @@ public class Function {
 		
 	}
 	//Takes in the initial distance between Sun and body- use initial conditions?
-	public static double perihelion(double initialDistance, Particle3D Sun, Particle3D orbit) 
-	{
+	public static double perihelion(double initialDistance, Particle3D Sun, Particle3D orbit) {
 		double[] peri = new double[2];
 		peri[0] = initialDistance;
 		peri[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
@@ -127,8 +131,7 @@ public class Function {
 		return peri[0];
 	}
 	
-	public static double aphelion(double initialDistance, Particle3D Sun, Particle3D orbit)
-	{
+	public static double aphelion(double initialDistance, Particle3D Sun, Particle3D orbit) {
 		double[] ap = new double[2];
 		ap[0] = initialDistance;
 		ap[1] = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition()).magnitude();
@@ -150,8 +153,7 @@ public class Function {
 		else return -1.0;
 		}
 	
-	public static int totalYearCounter(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double delta, int counter) 
-	{
+	public static int totalYearCounter(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double delta, int counter) {
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
 		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
@@ -160,33 +162,14 @@ public class Function {
 		}
 		return counter;
 		}
-	//I can't work out how to push it for some reason
-	public static double partialYear(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit) 
-	{
+
+	public static double partialYear(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit) {
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
 		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
+		//What is the principal value of arccos returned?
 		double angle = Math.acos(dotProduct);
-		return angle;
-	}
-	public static void adjustMomentumOfSystem (Particle3D[] particle3DArray)
-	{
-		Vector3D totalMomentum = new Vector3D();
-		double totalMass=0;
-		for(int i =0;i<particle3DArray.length;i++)
-		{
-			totalMass += particle3DArray[i].getMass();
-			totalMomentum = Vector3D.vectorAddition(totalMomentum, particle3DArray[i].getVelocity().scalarMultiply(particle3DArray[i].getMass()));
-		}
-		
-		for(int i=0;i<particle3DArray.length;i++)
-		{
-			particle3DArray[i].velocity = new Vector3D(Vector3D.vectorSubtraction(particle3DArray[i].velocity,totalMomentum.scalarDivide(totalMass)));
-		}
-		
-	}
-	{
-		
+		return angle/(2*Math.PI);
 	}
 }
 	
