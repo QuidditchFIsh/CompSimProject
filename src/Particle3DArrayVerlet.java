@@ -44,7 +44,6 @@ public class Particle3DArrayVerlet
 		}
 		// set the particles using the input
 		Vector3D[] force = new Vector3D[n];
-		//CHANGED USED TO BE 2D ARRAY NOW IS 1D ARRAY AS SPECIFIED BY FEEDBACK
 		for (int i=0; i<n;i++)
 		{
 			force[i] = new Vector3D();
@@ -56,7 +55,6 @@ public class Particle3DArrayVerlet
 		// starts the algorithm off by calculating the forces on the planets at the starts
 		Function.adjustMomentumOfSystem(particleArray);
 		//To stop the COM of the simulation from drifting we have to adjust the COM of the system 
-		//pretty sure this only has to be done once NEED TO CHECK!!!!
 		for ( int i=0 ;i < iterations;i++)
 		{
 			Function.arrayUpdatePosition(particleArray, dt, force);
@@ -71,18 +69,20 @@ public class Particle3DArrayVerlet
 			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray));
 			// output the difference in energy.	
 	
-			//Start from 1 because we don't want to measure the length of the Sun's year
-			//YEAH BUDDY
+			//Start from 1 because we don't want to measure the length of the Sun's year			
 			for (int j = 1; j < particleArray.length; j++)
 				{
-					Function.totalYearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
+					Function.yearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
 				}
 			
 			
 		}
+		double yearLength = 0;
+		output3.printf("Average Year Length and Total number of years \n ============================ \n");
 		for( int k =0;k<counter.length;k++)
 		{
-			output3.println();
+			yearLength = iterations*dt/(counter[k]/(2*Math.PI));
+			output3.println(yearLength + " " + counter[k]/(2*Math.PI));
 		}
 		output1.close();
 		output2.close();

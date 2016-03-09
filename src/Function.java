@@ -1,7 +1,8 @@
 import java.io.PrintWriter;
 import java.lang.Math;
 
-public class Function {
+public class Function 
+{
 
 	
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray) {
@@ -110,20 +111,9 @@ public class Function {
 		}
 		return ap[0];
 	}
-	// Define arbitrary small delta as error in angle; double iteration represents number of iterations which have passed, i.e. if looping over i, iterations = i in ith loop
-	//Returns -1 if year is not completed
-	public static double yearLength(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double dt, double iteration, double delta) {
-		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
-		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
-		//Divide the dot product by the magnitudes of the vectors to give cosine of the angle between them
-		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
-		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
-			return iteration*dt;
-		}
-		else return -1.0;
-		}
 	
-	public static void totalYearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit,double counter)
+	
+	public static void yearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit,double counter)
 	{
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(preSeparation,separation);
@@ -134,6 +124,7 @@ public class Function {
 	{
 		double mass=0;
 		Vector3D momentum = new Vector3D();
+		@SuppressWarnings("unused")
 		Vector3D velocity = new Vector3D();
 		for(int i=0;i<particleArray.length;i++ )
 		{
