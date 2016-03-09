@@ -3,42 +3,12 @@ import java.lang.Math;
 
 public class Function {
 
-	//THE BELOW CODE IS REDUDENT NOW WE ARE USING 1D ARRAYS
 	
-	/*public static Vector3D forceSum(Vector3D[][] forceArray, int i) {
-				//Create a Vector3D representing total force on a particle due to all others
-				Vector3D totalForce = new Vector3D();
-				//Create a Vector3D array to keep a running total of the sum of the forces: the final element represents the total force on one particle
-				Vector3D tempForce[] = new Vector3D[forceArray.length];
-				//Set the 0th element of the array to the 0th element of the ith row in the force array
-				tempForce[0] = forceArray[i][0];
-				
-				//Loop over rows of force matrix to calculate total force on a particle
-				for (int j = 0; j < forceArray.length - 1; j++) {
-					//Set the total force to the sum of the jth element of tempForce (i.e. the sum of all previous elements of the force array) and the next element of the force array
-					totalForce = Vector3D.vectorAddition(tempForce[j],forceArray[i][j+1]);
-					//Set the (j+1)th element of tempForce to the sum of forces 0 to j of the force array
-					tempForce[j+1] = totalForce;
-	}
-	return tempForce[forceArray.length];
-	}
-	
-			Vector3D totalForce = new Vector3D();
-			//Loop over given row in force matrix (i.e. all forces acting on one particle) and sum using vector addition
-			for (int j = 0; j < forceArray.length; j++) {
-				totalForce = Vector3D.vectorAddition(totalForce, forceArray[i][j]);
-			}
-			return totalForce;
-	}
-*/
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray) {
 		
 		int i;
-		Vector3D force = new Vector3D();
 		//Loop over particles and update position of each
-		for (i = 0; i < forceArray.length; i++) {
-			//force = forceSum(forceArray, i);
-		
+		for (i = 0; i < forceArray.length; i++) {		
 			position[i].secondOrderPositionUpdate(dt, forceArray[i]);
 		}
 	}
@@ -153,23 +123,32 @@ public class Function {
 		else return -1.0;
 		}
 	
-	public static int totalYearCounter(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit, double delta, int counter) {
+	public static void totalYearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit,double counter)
+	{
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
-		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
-		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
-		if (1.0 - delta < dotProduct && dotProduct < 1.0 + delta) {
-			counter += 1;
-		}
-		return counter;
-		}
-
-	public static double partialYear(Vector3D initialSeparation, Particle3D Sun, Particle3D orbit) {
-		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(),orbit.getPosition());
-		double dotProduct = Vector3D.dotProduct(initialSeparation,separation);
-		dotProduct = dotProduct/(separation.magnitude()*initialSeparation.magnitude());
-		//What is the principal value of arccos returned?
-		double angle = Math.acos(dotProduct);
-		return angle/(2*Math.PI);
+		double dotProduct = Vector3D.dotProduct(preSeparation,separation);
+		dotProduct = dotProduct/(separation.magnitude()*preSeparation.magnitude());
+		counter += Math.acos(dotProduct)/(2*Math.PI);
 	}
+	public static void adjustMomentumOfSystem ( Particle3D[] particleArray)
+	{
+		double mass=0;
+		Vector3D momentum = new Vector3D();
+		Vector3D velocity = new Vector3D();
+		for(int i=0;i<particleArray.length;i++ )
+		{
+			mass += particleArray[i].getMass();
+			momentum = new Vector3D(Vector3D.vectorAddition(momentum,momentum.scalarMultiply(particleArray[i].getMass())));
+		}
+		momentum = momentum.scalarDivide(mass);
+		for( int i=0;i<particleArray.length;i++)
+		{
+			velocity = Vector3D.vectorSubtraction(particleArray[i].getVelocity(),momentum );
+		}
+		
+	}
+		
+
+	
 }
 	

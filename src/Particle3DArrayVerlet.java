@@ -1,4 +1,3 @@
-import java.lang.Math;
 import java.util.Scanner;
 import java.io.*;
 public class Particle3DArrayVerlet 
@@ -26,11 +25,7 @@ public class Particle3DArrayVerlet
 		// simulation will run for
 		Particle3D[] particleArray = new Particle3D[n];
 		//Don't want to include Sun so length of counter array is one less than length of particle array
-		int[] counter = new int[particleArray.length - 1];
-		//Just for now set delta = 0.01
-		double delta = 0.01;
-		//What is this? What's it for?
-		Particle3D hemp = new Particle3D("help");
+		double[] counter = new double[particleArray.length - 1];
 		// create an array of particle
 		Vector3D initPos= new Vector3D();
 		Vector3D initVel = new Vector3D();
@@ -56,12 +51,7 @@ public class Particle3DArrayVerlet
 		}
 		// initalise the force array
 		//create 3 vector3D arrays for the Verlet time intergrator
-		double [][] energyArray = new double[iterations][n+1];
-		//this array will store the energy of the individual particles and the total energy
-		// of the system so it can be outputted and evaluated
-		//HAVE ANOTHER THINK ABOUT THIS
 		Function.arrayForceUpdate2(particleArray,force);
-		output2.println(Function.arrayTotalEnergy(particleArray));
 		double initalEnergy = Function.arrayTotalEnergy(particleArray);
 		// starts the algorithm off by calculating the forces on the planets at the starts
 		Function.adjustMomentumOfSystem(particleArray);
@@ -84,19 +74,20 @@ public class Particle3DArrayVerlet
 			//Start from 1 because we don't want to measure the length of the Sun's year
 			//YEAH BUDDY
 			for (int j = 1; j < particleArray.length; j++)
-			{
-				Function.totalYearCounter(initPos, particleArray[0], particleArray[i], delta, counter[i]);
-			}
+				{
+					Function.totalYearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
+				}
+			
+			
+		}
+		for( int k =0;k<counter.length;k++)
+		{
+			output3.println();
+		}
 		output1.close();
 		output2.close();
-		}
-		double counterArray[] = new double[particleArray.length];
-		//Start from 1 in particle array to deal with Sun
-		for (int i = 0; i < particleArray.length; i++) {
-			counterArray[i] = (double)counter[i] + Function.partialYear(initPos, particleArray[0], particleArray[i+1]);
-			output3.println(counterArray[i]);
-		}
 		output3.close();
+		input.close();
 		
 		
 		
