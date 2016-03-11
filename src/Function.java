@@ -122,8 +122,8 @@ public class Function
 	{
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(preSeparation, separation);
-		dotProduct = dotProduct/(separation.magnitude() * preSeparation.magnitude());
-		counter += Math.acos(dotProduct)/(2 * Math.PI);
+		dotProduct = dotProduct / (separation.magnitude() * preSeparation.magnitude());
+		counter += Math.acos(dotProduct) / (2 * Math.PI);
 	}
 	
 	//Method to adjust the momentum of the system to prevent the centre of mass from drifting

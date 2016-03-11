@@ -41,66 +41,60 @@ public class Particle3DArrayVerlet
 		initVel.setX(input.nextDouble());
 		initVel.setY(input.nextDouble());
 		initVel.setZ(input.nextDouble());
-		Particle3D temp = new Particle3D(initPos,initVel,input.nextDouble(),input.next());
+		Particle3D temp = new Particle3D(initPos, initVel, input.nextDouble(), input.next());
 		particleArray[i]= new Particle3D(temp);
 		//Print the initial information of each particle to the command line
 		//Do we want to keep this?
 		System.out.println(particleArray[i]);
 		}
 		
-		//START HERE
+		//Create and initialise the force array
 		Vector3D[] force = new Vector3D[n];
 		for (int i = 0; i < n; i++)
 		{
 			force[i] = new Vector3D();
 		}
-		// initalise the force array
-		//create 3 vector3D arrays for the Verlet time intergrator
-		Function.arrayForceUpdate2(particleArray,force);
+		//Calculate the initial forces acting on each particle
+		Function.arrayForceUpdate2(particleArray, force);
+		//Calculate the initial energy of the system
 		double initalEnergy = Function.arrayTotalEnergy(particleArray);
-		// starts the algorithm off by calculating the forces on the planets at the starts
+		//Adjust the momentum of the system to prevent the centre of mass from drifting
 		Function.adjustMomentumOfSystem(particleArray);
-		//To stop the COM of the simulation from drifting we have to adjust the COM of the system 
+		
+		//Loop over the iterations, performing the Verlet Time Integration Scheme
 		for (int i = 0; i < iterations; i++)
 		{
+			//Update the position of each particle
 			Function.arrayUpdatePosition(particleArray, dt, force);
-			// update all the positions of the particle array using functions from the function class
-			Function.arrayForceUpdate2(particleArray,force);
-			// updates the force array using the verlet algorithm
+			//Update the force acting on each particle
+			Function.arrayForceUpdate2(particleArray, force);
+			//Update the velocity of each particle
 			Function.arrayUpdateVelocity(particleArray, dt, force);
-			//updates the velocity of the particles.
-			Function.outputVMD(particleArray, output1,i);
-			// This method will write the results to the output file output1 in a format
-			//Which can be read by VMD.
+			//Write the positions of each particle to the first output file to be read by VMD
+			Function.outputVMD(particleArray, output1, i);
+			//Write the energy fluctuation - the difference between energy in this iteration and initial energy - to the second output file
 			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray));
-			// output the difference in energy.	
-	
-			//Start from 1 because we don't want to measure the length of the Sun's year			
+
+			//Loop over the particles and count the number of years that have passed
+			//Start from 1 so that the Sun is not included
 			for (int j = 1; j < particleArray.length; j++)
 				{
 					Function.yearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
 				}
-			
-			
 		}
+		
+		//Create a double which will store the value of the length of a year for each orbiting particle
 		double yearLength = 0;
+		//Write the average length of a year and the total number of orbits completed for each particle to the third output file 
 		output3.printf("Average Year Length and Total number of years \n ============================ \n");
-		for( int k =0;k<counter.length;k++)
+		for (int k = 0; k < counter.length; k++)
 		{
-			yearLength = iterations*dt/(counter[k]/(2*Math.PI));
-			output3.println(yearLength + " " + counter[k]/(2*Math.PI));
+			yearLength = iterations * dt / (counter[k] / (2 * Math.PI));
+			output3.println(yearLength + " " + counter[k] / (2 * Math.PI));
 		}
 		output1.close();
 		output2.close();
 		output3.close();
 		input.close();
-		
-		
-		
-		
-		
 	}
-	
-	
-
 }
