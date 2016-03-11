@@ -159,7 +159,7 @@ public class Particle3D
         //position.addScaledVector(velocity, dt);
     	position = Vector3D.vectorAddition(position,velocity.scalarMultiply(dt));		
         //position.addScaledVector(force, Math.pow(dt, 2)/(2*mass));   
-    	position = Vector3D.vectorAddition(position,force.scalarMultiply( Math.pow(dt, 2)/(2*mass)));
+    	position = Vector3D.vectorAddition(position,force.scalarMultiply(Math.pow(dt, 2)/(2*mass)));
     }
     
     //Static method to find the distance between two particles

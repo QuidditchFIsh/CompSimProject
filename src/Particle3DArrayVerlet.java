@@ -3,33 +3,37 @@ import java.io.*;
 public class Particle3DArrayVerlet 
 {
 
-	public static void main(String[] argv) throws IOException,FileNotFoundException 
+	public static void main(String[] argv) throws IOException, FileNotFoundException 
 	{
-		// Identify a file from the comand line and use it to create the particles.
+		//Read the name of an input file from the command line and read the parameters of the system from there
 		File file = new File(argv[0]);
+		//Create a scanner object to read the data from the input file
 		Scanner input = new Scanner(file);
-		//create a scanner object to input the 
+		
+		//Create output files with names given in the command line
 		String outfile1 = new String(argv[1]);
 		String outfile2 = new String (argv[2]);
 		String outfile3 = new String (argv[3]);
-		
 		PrintWriter output1 = new PrintWriter (new FileWriter(outfile1));
 		PrintWriter output2 = new PrintWriter(new FileWriter(outfile2));
 		PrintWriter output3 = new PrintWriter(new FileWriter(outfile3));
-		// creates the three out put files for this program
+
+		//Set n, which will be the number of particles in the simulation
 		int n = input.nextInt();
+		//Set dt, which will be the timestep used in the simulation
 		double dt = input.nextDouble();
+		//Set iterations, which will be the number of iterations for which the simulation will run
 		int iterations = input.nextInt();
-		// n will be the number of particles we are dealing with in this simulation
-		// dt is the the time step and iterations is the number of iterations which this 
-		// simulation will run for
+		
+		//Create a particle array to contain all n bodies
 		Particle3D[] particleArray = new Particle3D[n];
-		//Don't want to include Sun so length of counter array is one less than length of particle array
+		//Create an array of doubles that will count the number of years that have passed for each particle, not including the Sun
 		double[] counter = new double[particleArray.length - 1];
-		// create an array of particle
-		Vector3D initPos= new Vector3D();
+		
+		//Set the initial positions and velocities of each particle from data given in the input file
+		Vector3D initPos = new Vector3D();
 		Vector3D initVel = new Vector3D();
-		for (int i=0;i<particleArray.length;i++)
+		for (int i = 0; i < particleArray.length; i++)
 		{
 		initPos.setX(input.nextDouble());
 		initPos.setY(input.nextDouble());
@@ -39,12 +43,14 @@ public class Particle3DArrayVerlet
 		initVel.setZ(input.nextDouble());
 		Particle3D temp = new Particle3D(initPos,initVel,input.nextDouble(),input.next());
 		particleArray[i]= new Particle3D(temp);
+		//Print the initial information of each particle to the command line
+		//Do we want to keep this?
 		System.out.println(particleArray[i]);
-
 		}
-		// set the particles using the input
+		
+		//START HERE
 		Vector3D[] force = new Vector3D[n];
-		for (int i=0; i<n;i++)
+		for (int i = 0; i < n; i++)
 		{
 			force[i] = new Vector3D();
 		}
@@ -55,7 +61,7 @@ public class Particle3DArrayVerlet
 		// starts the algorithm off by calculating the forces on the planets at the starts
 		Function.adjustMomentumOfSystem(particleArray);
 		//To stop the COM of the simulation from drifting we have to adjust the COM of the system 
-		for ( int i=0 ;i < iterations;i++)
+		for (int i = 0; i < iterations; i++)
 		{
 			Function.arrayUpdatePosition(particleArray, dt, force);
 			// update all the positions of the particle array using functions from the function class
@@ -63,7 +69,7 @@ public class Particle3DArrayVerlet
 			// updates the force array using the verlet algorithm
 			Function.arrayUpdateVelocity(particleArray, dt, force);
 			//updates the velocity of the particles.
-			Function.outputVMD( particleArray, output1,i);
+			Function.outputVMD(particleArray, output1,i);
 			// This method will write the results to the output file output1 in a format
 			//Which can be read by VMD.
 			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray));
