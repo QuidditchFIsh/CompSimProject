@@ -28,8 +28,7 @@ public class Particle3DArrayVerlet
 		//Create a particle array to contain all n bodies
 		Particle3D[] particleArray = new Particle3D[n];
 		//Create an array of doubles that will count the number of years that have passed for each particle, not including the Sun
-		double[] counter = new double[particleArray.length ];
-		//changed the minus 1
+		double[] counter = new double[particleArray.length - 1];
 		
 		//Set the initial positions and velocities of each particle from data given in the input file
 		Vector3D initPos = new Vector3D();
@@ -76,9 +75,8 @@ public class Particle3DArrayVerlet
 
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included
-			for (int j = 0; j < particleArray.length; j++)
+			for (int j = 1; j < particleArray.length; j++)
 				{
-				//Why was this 1??
 					Function.yearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
 				}
 		}

@@ -68,7 +68,7 @@ public class Function
 		
 			output1.printf("\n%d \n",n);
 			output1.printf("Point = %d \n",i);
-			for ( int k = 0; k < n; k ++)
+			for (int k = 0; k < n; k ++)
 			{
 				output1.print(particleArray[k].position);
 			}
