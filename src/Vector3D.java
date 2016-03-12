@@ -160,8 +160,8 @@ public class Vector3D
  */
     public static double dotProduct(Vector3D  a, Vector3D  b)
     {
-    	double dot;
-    	dot = (a.getX()*b.getX() + a.getY()*b.getY() + a.getZ()*b.getZ());
+    	
+    	double dot = (a.getX()*b.getX() + a.getY()*b.getY() + a.getZ()*b.getZ());
     	return dot;
     }
     	

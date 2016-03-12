@@ -9,7 +9,8 @@ public class Function
 	{
 		
 		//Loop over particles and update position of each
-		for (int i = 0; i < forceArray.length; i++) {		
+		for (int i = 0; i < forceArray.length; i++)
+		{
 			position[i].secondOrderPositionUpdate(dt, forceArray[i]);
 		}
 	}
@@ -70,7 +71,7 @@ public class Function
 			output1.printf("Point = %d \n",i);
 			for ( int k = 0; k < n; k ++)
 			{
-				output1.print(particleArray[k].position);
+				output1.println(particleArray[k].name + " " + particleArray[k].position);
 			}
 	}
 	

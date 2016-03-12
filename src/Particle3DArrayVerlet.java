@@ -36,7 +36,8 @@ public class Particle3DArrayVerlet
 		Vector3D initVel = new Vector3D();
 		for (int i = 0; i < particleArray.length; i++)
 		{
-		
+		//does the scanner method not do this anyway?
+		//would particleArray[i] = new PArticle3D(scanner input) not work?
 		initPos.setX(input.nextDouble());
 		initPos.setY(input.nextDouble());
 		initPos.setZ(input.nextDouble());
