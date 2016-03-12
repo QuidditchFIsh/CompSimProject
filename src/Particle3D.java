@@ -137,7 +137,7 @@ public class Particle3D
     public static double GravitationalPotential(Particle3D big, Particle3D small)
     {
         double R2 = small.particleDistance(small, big);
-        return -1* small.getMass() * big.getMass() * 1/R2;
+        return -1* small.getMass() * big.getMass() * 1/R2  ;
     }
     
     //Method to update the velocity using a given timestep dt and the force vector
@@ -157,11 +157,8 @@ public class Particle3D
     //Method to update the position to second order terms in the Taylor Expansion
     public void secondOrderPositionUpdate(double dt, Vector3D force)
     {
-        //position.addScaledVector(velocity, dt);
-    	position = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));		
-        //position.addScaledVector(force, Math.pow(dt, 2)/(2*mass));   
+    	position = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));
     	position = new Vector3D(Vector3D.vectorAddition(position, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
-
     }
     
     //Static method to find the distance between two particles
@@ -177,13 +174,13 @@ public class Particle3D
         //Calculates the modulus squared of the distance between the particles
         double R2 = small.particleDistance(small, big);
         R2=Math.pow(R2, 2);
-        Vector3D a = small.getPosition();
-        Vector3D b = big.getPosition();
+        Vector3D a = new Vector3D( small.getPosition());
+        Vector3D b = new Vector3D(big.getPosition());
         //Computes the unit vector between the particles
         Vector3D rHat = new Vector3D(Vector3D.vectorSubtraction(a, b));
         rHat.scalarMultiply(1 / Math.sqrt(R2));
         //Computes the gravitational force vector by multiplying the unit vector by the magnitude		
-        rHat.scalarMultiply((big.getMass() * small.getMass() * (-1/R2)));      
+        rHat.scalarMultiply((  big.getMass() * small.getMass() * (-1/R2)));      
         return rHat;
     }
 }

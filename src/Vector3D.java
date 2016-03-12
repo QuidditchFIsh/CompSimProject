@@ -80,8 +80,8 @@ public class Vector3D
  */
     public double magnitudeSquared()
     {
-    	double mod2;
-    	mod2 = Math.pow(this.getX(),2) + Math.pow(this.getY(),2) + Math.pow(this.getZ(),2);
+    	
+    	double mod2 = Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2);
     	return mod2;
     }
 /**Returns the magnitude of the vector.
@@ -98,7 +98,7 @@ public class Vector3D
   */
     public String toString()
     	{
-    	return "(" + x + ", " + y + ", " + z + ")";
+    	return  x + " " + y + " " + z ;
     	}
     
  /**Multiplies a vector by a scalar.
@@ -109,7 +109,7 @@ public class Vector3D
   */
 	public Vector3D  scalarMultiply(double b)
 {
-		return new Vector3D (getX()*b, getY()*b, getZ()*b);
+		return new Vector3D (x*b, y*b, z*b);
 	}
 /**Divides a vector by a scalar.
  * 

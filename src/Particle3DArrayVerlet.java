@@ -30,31 +30,26 @@ public class Particle3DArrayVerlet
 		//Create an array of doubles that will count the number of years that have passed for each particle, not including the Sun
 		double[] counter = new double[particleArray.length - 1];
 		
-		//Set the initial positions and velocities of each particle from data given in the input file
+		//Set the initial positions of each particle from data given in the input file
 		Vector3D initPos = new Vector3D();
-		Vector3D initVel = new Vector3D();
 		for (int i = 0; i < particleArray.length; i++)
 		{
-		//does the scanner method not do this anyway?
-		//would particleArray[i] = new PArticle3D(scanner input) not work?
-		initPos.setX(input.nextDouble());
-		initPos.setY(input.nextDouble());
-		initPos.setZ(input.nextDouble());
-		initVel.setX(input.nextDouble());
-		initVel.setY(input.nextDouble());
-		initVel.setZ(input.nextDouble());
-		particleArray[i] = new Particle3D(initPos, initVel, input.nextDouble(), input.next());
+	
+		particleArray[i] = new Particle3D("Temp");
+		particleArray[i].readScanner(input);
 		
 		}
 		
 		//Create and initialise the force array
 		Vector3D[] force = new Vector3D[n];
+		Vector3D[] preForce = new Vector3D[n];
 		for (int i = 0; i < n; i++)
 		{
 			force[i] = new Vector3D();
+			preForce[i] = new Vector3D();
 		}
 		//Calculate the initial forces acting on each particle
-		Function.arrayForceUpdate2(particleArray, force);
+		Function.arrayForceUpdate(particleArray, force,preForce);
 		//Calculate the initial energy of the system
 		double initalEnergy = Function.arrayTotalEnergy(particleArray);
 		//Adjust the momentum of the system to prevent the centre of mass from drifting
@@ -66,19 +61,27 @@ public class Particle3DArrayVerlet
 			//Update the position of each particle
 			Function.arrayUpdatePosition(particleArray, dt, force);
 			//Update the force acting on each particle
-			Function.arrayForceUpdate2(particleArray, force);
+			//System.out.println(particleArray[0] + " " + particleArray[1] + " " + particleArray[2]);
+			Function.arrayForceUpdate(particleArray, force,preForce);
 			//Update the velocity of each particle
 			Function.arrayUpdateVelocity(particleArray, dt, force);
-			//Write the positions of each particle to the first output file to be read by VMD
+			for(int j=0;j<n;j++)
+			{
+				preForce[j] = new Vector3D(force[j]);
+				force[j] = new Vector3D();
+				System.out.println(particleArray[j]);
+			}
+			//Write the positions of each particle to the first output f1ile to be read by VMD
 			Function.outputVMD(particleArray, output1, i);
+			
 			//Write the energy fluctuation - the difference between energy in this iteration and initial energy - to the second output file
-			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray));
+			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray) + " " + Function.arrayTotalEnergy(particleArray));
 
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included
 			for (int j = 1; j < particleArray.length; j++)
 				{
-					Function.yearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
+					Function.yearCounter(initPos, particleArray[0], particleArray[j], counter[j-1]);
 				}
 		}
 		

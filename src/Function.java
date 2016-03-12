@@ -31,43 +31,31 @@ public class Function
 	{
 		double totalKinetic = 0.0;
 		//Loop over particles and sum their kinetic energies
-		for (int i = 0; i < energy.length; i++) {
-			totalKinetic = totalKinetic + energy[i].kineticEnergy();
+		for (int i = 0; i < energy.length; i++) 
+		{
+			totalKinetic += energy[i].kineticEnergy();
 		}
 		double totalGravitational = 0.0;
 		//Loop over pairs of particles and sum their potential energies
-		for (int j = 0; j < energy.length; j++) {
-			for (int k = j + 1; k < energy.length; k++) {
+		for (int j = 0; j < energy.length; j++)
+		{
+			for (int k = j + 1; k < energy.length; k++)
+			{
 				double potential = Particle3D.GravitationalPotential(energy[j],energy[k]);
-				totalGravitational = totalGravitational + potential;
+				totalGravitational += potential;
 			}
 		}
 		return totalKinetic + totalGravitational;
+		//return totalGravitational;
 	}
 	
-	//NYE do we need both of the array force methods? Because we don't use this one
-	//If not let's rename the other one arrayForceUpdate
-	public static void arrayUpdateForce(Particle3D[] particles, Vector3D[][] forceArray)
-	{
-		Vector3D[][] tempForceArray = new Vector3D[forceArray.length][forceArray.length];
-		for (int i = 0; i < forceArray.length; i++) {
-			for (int j = i + 1; j < forceArray.length; j++) {
-				tempForceArray[i][j] = Particle3D.GravitationalForce(particles[i],particles[j]);
-				forceArray[i][j] = Vector3D.vectorAddition(forceArray[i][j], tempForceArray[i][j]);
-				forceArray[i][j] = forceArray[i][j].scalarDivide(2);
-			}
-			for (int k = 0; k < i; k++) {
-				forceArray[i][k] = forceArray[k][i].scalarMultiply(-1);
-			}
-		}
-	}
 	
 	//Method to output the positions of each particle after a given iteration i to an output file
 	public static void outputVMD(Particle3D[] particleArray, PrintWriter output1, int i)
 	{
 		int n = particleArray.length;
 		
-			output1.printf("\n%d \n",n);
+			output1.printf("%d \n",n);
 			output1.printf("Point = %d \n",i);
 			for (int k = 0; k < n; k ++)
 			{
@@ -76,22 +64,26 @@ public class Function
 	}
 	
 	//Method to update the force acting on each particle due to every other particle in the force array, using the average of F(t) and F(t+dt)
-	public static void arrayForceUpdate2(Particle3D[] particle, Vector3D[] forceArray)
+	public static void arrayForceUpdate(Particle3D[] particle, Vector3D[] forceArray,Vector3D[] preForceArray)
 	{
 		Vector3D[] tempForceArray = new Vector3D[forceArray.length];
 		for (int i = 0; i < forceArray.length; i++)
+		{
 			for (int j = 0; j < forceArray.length; j++)
 				
 			{
 				if (i != j)
 				{
 					
-					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[i], particle[j]));
-					
+					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[j], particle[i]));
 					forceArray[i]= (Vector3D.vectorAddition(forceArray[i],tempForceArray[i]));
-					forceArray[i]= (forceArray[i].scalarDivide(2));
+					
 				}
 			}
+			forceArray[i]= (Vector3D.vectorAddition(forceArray[i], preForceArray[i]));
+			forceArray[i] = forceArray[i].scalarDivide(2);
+		}
+		
 	}
 	
 	//Method to find the perihelion of a given particle
