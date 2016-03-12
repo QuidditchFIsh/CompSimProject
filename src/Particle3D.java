@@ -10,8 +10,8 @@ public class Particle3D
  
     /**These are the constructors for this class.
      */
-     Vector3D position=new Vector3D();
-     Vector3D velocity=new Vector3D();
+     Vector3D position = new Vector3D();
+     Vector3D velocity = new Vector3D();
      
      private double mass;
     
@@ -27,7 +27,7 @@ public class Particle3D
         velocity.setX(0);
         velocity.setY(0);
         velocity.setZ(0);
-        this.name=name;
+        this.name = name;
     }
     
     //This constructor will set the particle properties to the given arguments.
@@ -41,9 +41,10 @@ public class Particle3D
         velocity.setY(vel.getY());
         velocity.setZ(vel.getZ());
         
-        this.mass=mass;
-        this.name=name;
+        this.mass = mass;
+        this.name = name;
     }
+    
     public Particle3D(Particle3D copy)
     {
     	position.setX(copy.position.getX());
@@ -78,14 +79,14 @@ public class Particle3D
     
     
    
-    public void setPosition(double x,double y,double z)
+    public void setPosition(double x, double y, double z)
     {
         position.setX(x);
         position.setY(y);
         position.setZ(z);
     }
     
-    public void setVelocity(double x,double y,double z)
+    public void setVelocity(double x, double y, double z)
     {
         velocity.setX(x);
         velocity.setY(y);
@@ -120,7 +121,7 @@ public class Particle3D
         velocity.setX(input.nextDouble());
         velocity.setY(input.nextDouble());
         velocity.setZ(input.nextDouble());
-        mass=input.nextDouble();
+        mass = input.nextDouble();
         name = input.next();
     }
    
@@ -133,40 +134,40 @@ public class Particle3D
     }
     
     //Method to return the gravitational potential energy betwen two particles
-    public static double GravitationalPotential(Particle3D big,Particle3D small)
+    public static double GravitationalPotential(Particle3D big, Particle3D small)
     {
-        double R2 = small.particleDistance(small,big);
-        return -1*small.getMass()*big.getMass() * 1/R2;
+        double R2 = small.particleDistance(small, big);
+        return -1* small.getMass() * big.getMass() * 1/R2;
     }
     
     //Method to update the velocity using a given timestep dt and the force vector
     public void velocityUpdate(double dt, Vector3D force)
     {
         //velocity.addScaledVector(force, dt/mass);    
-        velocity = new Vector3D(Vector3D.vectorAddition(velocity,force.scalarMultiply(dt/mass)));
+        velocity = new Vector3D(Vector3D.vectorAddition(velocity, force.scalarMultiply(dt / mass)));
     }
     
     //Method to update the position to first order terms in the Taylor Expansion
     public void positionUpdate(double dt)
     {
         //position.addScaledVector(velocity, dt);
-        position = new Vector3D(Vector3D.vectorAddition(position,velocity.scalarMultiply(dt)));
+        position = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));
     }
     
     //Method to update the position to second order terms in the Taylor Expansion
     public void secondOrderPositionUpdate(double dt, Vector3D force)
     {
         //position.addScaledVector(velocity, dt);
-    	position = new Vector3D( Vector3D.vectorAddition(position,velocity.scalarMultiply(dt)));		
+    	position = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));		
         //position.addScaledVector(force, Math.pow(dt, 2)/(2*mass));   
-    	position = new Vector3D(Vector3D.vectorAddition(position,force.scalarMultiply( Math.pow(dt, 2)/(2*mass))));
+    	position = new Vector3D(Vector3D.vectorAddition(position, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
 
     }
     
     //Static method to find the distance between two particles
     public double particleDistance(Particle3D a, Particle3D b)
     {
-    	return (Vector3D.vectorSubtraction(a.getPosition(),b.getPosition())).magnitude();
+    	return (Vector3D.vectorSubtraction(a.getPosition(), b.getPosition())).magnitude();
     }
     
     
@@ -174,17 +175,15 @@ public class Particle3D
     public static Vector3D GravitationalForce(Particle3D small, Particle3D big)
     {
         //Calculates the modulus squared of the distance between the particles
-        double R2 = small.particleDistance(small,big);
+        double R2 = small.particleDistance(small, big);
         R2=Math.pow(R2, 2);
         Vector3D a = small.getPosition();
         Vector3D b = big.getPosition();
         //Computes the unit vector between the particles
-        Vector3D rHat =new Vector3D( Vector3D.vectorSubtraction(a,b));
-        rHat.scalarMultiply(1/Math.sqrt(R2));
+        Vector3D rHat = new Vector3D(Vector3D.vectorSubtraction(a, b));
+        rHat.scalarMultiply(1 / Math.sqrt(R2));
         //Computes the gravitational force vector by multiplying the unit vector by the magnitude		
-        rHat.scalarMultiply((big.getMass()*small.getMass()*(-1/R2)));      
+        rHat.scalarMultiply((big.getMass() * small.getMass() * (-1/R2)));      
         return rHat;
     }
- 
-    
 }
