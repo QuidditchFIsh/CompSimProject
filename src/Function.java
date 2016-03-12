@@ -129,9 +129,7 @@ public class Function
 		for(int i = 0; i < particleArray.length; i++)
 		{
 			mass += particleArray[i].getMass();
-			//NYE: Why do you multiply momentum by mass here?
-			//Also I think this line wins the prize for 'Most brackets in a row'
-			momentum = new Vector3D(Vector3D.vectorAddition(momentum, momentum.scalarMultiply(particleArray[i].getMass())));
+			momentum = new Vector3D(Vector3D.vectorAddition(momentum, velocity.scalarMultiply(particleArray[i].getMass())));
 		}
 		momentum = momentum.scalarDivide(mass);
 		for(int i = 0; i < particleArray.length; i++)
