@@ -33,7 +33,7 @@ public class Particle3D
     //This constructor will set the particle properties to the given arguments.
     public Particle3D(Vector3D pos, Vector3D vel, double mass, String name)
     {
-       
+    	position.setX(pos.getX());
         position.setY(pos.getY());
         position.setZ(pos.getZ());
         
@@ -143,23 +143,23 @@ public class Particle3D
     public void velocityUpdate(double dt, Vector3D force)
     {
         //velocity.addScaledVector(force, dt/mass);    
-        velocity = Vector3D.vectorAddition(velocity,force.scalarMultiply(dt/mass));
+        velocity = new Vector3D(Vector3D.vectorAddition(velocity,force.scalarMultiply(dt/mass)));
     }
     
     //Method to update the position to first order terms in the Taylor Expansion
     public void positionUpdate(double dt)
     {
         //position.addScaledVector(velocity, dt);
-        position = Vector3D.vectorAddition(position,velocity.scalarMultiply(dt));
+        position = new Vector3D(Vector3D.vectorAddition(position,velocity.scalarMultiply(dt)));
     }
     
     //Method to update the position to second order terms in the Taylor Expansion
     public void secondOrderPositionUpdate(double dt, Vector3D force)
     {
         //position.addScaledVector(velocity, dt);
-    	position = Vector3D.vectorAddition(position,velocity.scalarMultiply(dt));		
+    	position = new Vector3D( Vector3D.vectorAddition(position,velocity.scalarMultiply(dt)));		
         //position.addScaledVector(force, Math.pow(dt, 2)/(2*mass));   
-    	position = Vector3D.vectorAddition(position,force.scalarMultiply( Math.pow(dt, 2)/(2*mass)));
+    	position = new Vector3D(Vector3D.vectorAddition(position,force.scalarMultiply( Math.pow(dt, 2)/(2*mass))));
     }
     
     //Static method to find the distance between two particles
@@ -178,7 +178,7 @@ public class Particle3D
         Vector3D a = small.getPosition();
         Vector3D b = big.getPosition();
         //Computes the unit vector between the particles
-        Vector3D rHat = Vector3D.vectorSubtraction(a,b);
+        Vector3D rHat =new Vector3D( Vector3D.vectorSubtraction(a,b));
         rHat.scalarMultiply(1/Math.sqrt(R2));
         //Computes the gravitational force vector by multiplying the unit vector by the magnitude		
         rHat.scalarMultiply((big.getMass()*small.getMass()*(-1/R2)));      

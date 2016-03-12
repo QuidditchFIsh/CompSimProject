@@ -25,21 +25,21 @@ public class Particle3DArrayVerlet
 		// simulation will run for
 		Particle3D[] particleArray = new Particle3D[n];
 		//Don't want to include Sun so length of counter array is one less than length of particle array
-		double[] counter = new double[particleArray.length - 1];
+		double[] counter = new double[particleArray.length ];
+		//changed the minus 1
 		// create an array of particle
 		Vector3D initPos= new Vector3D();
 		Vector3D initVel = new Vector3D();
 		for (int i=0;i<particleArray.length;i++)
 		{
+		
 		initPos.setX(input.nextDouble());
 		initPos.setY(input.nextDouble());
 		initPos.setZ(input.nextDouble());
 		initVel.setX(input.nextDouble());
 		initVel.setY(input.nextDouble());
 		initVel.setZ(input.nextDouble());
-		Particle3D temp = new Particle3D(initPos,initVel,input.nextDouble(),input.next());
-		particleArray[i]= new Particle3D(temp);
-		System.out.println(particleArray[i]);
+		particleArray[i] = new Particle3D(initPos,initVel,input.nextDouble(),input.next());
 
 		}
 		// set the particles using the input
@@ -70,8 +70,9 @@ public class Particle3DArrayVerlet
 			// output the difference in energy.	
 	
 			//Start from 1 because we don't want to measure the length of the Sun's year			
-			for (int j = 1; j < particleArray.length; j++)
+			for (int j = 0; j < particleArray.length; j++)
 				{
+				//Why was this 1??
 					Function.yearCounter(initPos, particleArray[0], particleArray[j], counter[j]);
 				}
 			

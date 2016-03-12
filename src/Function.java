@@ -63,9 +63,9 @@ public class Function
 		int n = particleArray.length;
 		
 		
-			output1.printf("%d \n",n);
+			output1.printf("\n%d \n",n);
 			output1.printf("Point = %d \n",i);
-			for ( int k=0;k<n;i++)
+			for ( int k=0;k<n;k++)
 			{
 				output1.print(particleArray[k].position);
 			}
@@ -129,7 +129,7 @@ public class Function
 		for(int i=0;i<particleArray.length;i++ )
 		{
 			mass += particleArray[i].getMass();
-			momentum = new Vector3D(Vector3D.vectorAddition(momentum,momentum.scalarMultiply(particleArray[i].getMass())));
+			momentum = Vector3D.vectorAddition(momentum,momentum.scalarMultiply(particleArray[i].getMass()));
 		}
 		momentum = momentum.scalarDivide(mass);
 		for( int i=0;i<particleArray.length;i++)
