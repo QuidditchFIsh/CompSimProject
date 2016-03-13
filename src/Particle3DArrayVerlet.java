@@ -5,6 +5,7 @@ public class Particle3DArrayVerlet
 
 	public static void main(String[] argv) throws IOException, FileNotFoundException 
 	{
+		System.out.println("welp");
 		//Read the name of an input file from the command line and read the parameters of the system from there
 		File file = new File(argv[0]);
 		//Create a scanner object to read the data from the input file
@@ -53,7 +54,6 @@ public class Particle3DArrayVerlet
 		for(int j=0;j<n;j++)
 		{
 			preForce[j] = new Vector3D(force[j]);
-			force[j] = new Vector3D();
 			//System.out.println(particleArray[j]);
 		}
 		//Adjust the momentum of the system to prevent the centre of mass from drifting
@@ -68,12 +68,12 @@ public class Particle3DArrayVerlet
 			//Update the force acting on each particle
 			//System.out.println(particleArray[0] + " " + particleArray[1] + " " + particleArray[2]);
 			Function.arrayForceUpdate(particleArray, force, preForce);
+			//System.out.println(force[0] +" "+ force[1]);
 			//Update the velocity of each particle
-			Function.arrayUpdateVelocity(particleArray, dt, force);
+			Function.arrayUpdateVelocity(particleArray, dt, force,preForce);
 			for(int j=0;j<n;j++)
 			{
 				preForce[j] = new Vector3D(force[j]);
-				force[j] = new Vector3D();
 				//System.out.println(particleArray[j]);
 			}
 			//Write the positions of each particle to the first output f1ile to be read by VMD

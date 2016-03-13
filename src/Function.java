@@ -11,18 +11,20 @@ public class Function
 		//Loop over particles and update position of each
 		for (int i = 0; i < forceArray.length; i++)
 		{
+			
 			position[i].secondOrderPositionUpdate(dt, forceArray[i]);
 		}
 	}
 	
 	//Method to update the velocity of each particle by using the sum of all forces acting on the particle
-	public static void arrayUpdateVelocity(Particle3D[] velocity, double dt, Vector3D[] forceArray)
+	public static void arrayUpdateVelocity(Particle3D[] velocity, double dt, Vector3D[] forceArray,Vector3D[] preForce)
 	{
 				
 		//Loop over particles and update velocity of each
 		for (int i = 0; i < forceArray.length; i++) 
 		{
-			velocity[i].velocityUpdate(dt, forceArray[i]);
+			Vector3D temp = new Vector3D(Vector3D.vectorAddition(forceArray[i],preForce[i]));
+			velocity[i].velocityUpdate(dt, temp.scalarDivide(2));
 		}
 	}
 	
@@ -41,9 +43,7 @@ public class Function
 		{
 			for (int k = j + 1; k < energy.length; k++)
 			{
-				double potential = Particle3D.GravitationalPotential(energy[j],energy[k]);
-				totalGravitational += potential;
-				
+				totalGravitational += Particle3D.GravitationalPotential(energy[j],energy[k]);
 			}
 		}
 		return totalKinetic + totalGravitational;
@@ -70,18 +70,24 @@ public class Function
 		Vector3D[] tempForceArray = new Vector3D[forceArray.length];
 		for (int i = 0; i < forceArray.length; i++)
 		{
+			forceArray[i] = new Vector3D();
 			for (int j = 0; j < forceArray.length; j++)
 				
 			{
 				if (i != j)
 				{
+					
 					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[j], particle[i]));
 					forceArray[i]= (Vector3D.vectorAddition(forceArray[i],tempForceArray[i]));
+					//System.out.println(particle[i].name + " "+ particle[j].name + " " + forceArray[i] + " " + tempForceArray[i]);
+					
+					
 					
 				}
 			}
-			forceArray[i]= (Vector3D.vectorAddition(forceArray[i], preForceArray[i]));
-			forceArray[i] = forceArray[i].scalarDivide(2);
+			//System.out.println("==========");
+			//forceArray[i]= (Vector3D.vectorAddition(forceArray[i], preForceArray[i]));
+			//forceArray[i] = forceArray[i].scalarDivide(2);
 		}
 		
 		

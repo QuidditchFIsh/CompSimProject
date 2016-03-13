@@ -136,8 +136,9 @@ public class Particle3D
     //Method to return the gravitational potential energy betwen two particles
     public static double GravitationalPotential(Particle3D big, Particle3D small)
     {
+    	double G = 6.67E-11;
         double R2 = small.particleDistance(small, big);
-        return -1* small.getMass() * big.getMass() * 1/R2  ;
+        return -1* small.getMass() * big.getMass() * 1/R2 * G  ;
     }
     
     //Method to update the velocity using a given timestep dt and the force vector
@@ -173,6 +174,7 @@ public class Particle3D
     //Method to return the gravitational force vector acting on the orbiting particle, labelled here as 'small', due to the central particle, labelled here as 'big'
     public static Vector3D GravitationalForce(Particle3D small, Particle3D big)
     {
+    	double G = 6.67E-11;
         //Calculates the modulus squared of the distance between the particles
         double R2 = small.particleDistance(small, big);
         R2=Math.pow(R2, 2);
@@ -182,7 +184,7 @@ public class Particle3D
         Vector3D rHat = new Vector3D(Vector3D.vectorSubtraction(a, b));
         rHat.scalarMultiply(1 / Math.sqrt(R2));
         //Computes the gravitational force vector by multiplying the unit vector by the magnitude		
-        rHat.scalarMultiply((  big.getMass() * small.getMass() * (-1/R2)));      
+        rHat.scalarMultiply((  big.getMass() * small.getMass() * (-G/R2)));      
         return rHat;
     }
 }
