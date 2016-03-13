@@ -108,7 +108,7 @@ public class Vector3D
   * @return a*b
   */
 	public Vector3D  scalarMultiply(double b)
-{
+	{
 		return new Vector3D (x*b, y*b, z*b);
 	}
 /**Divides a vector by a scalar.

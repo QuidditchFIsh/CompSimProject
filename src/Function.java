@@ -23,9 +23,12 @@ public class Function
 		//Loop over particles and update velocity of each
 		for (int i = 0; i < forceArray.length; i++) 
 		{
+		
 			Vector3D temp = new Vector3D(Vector3D.vectorAddition(forceArray[i],preForce[i]));
 			velocity[i].velocityUpdate(dt, temp.scalarDivide(2));
+		//	System.out.println(velocity[i].getVelocity()+ "ayy");
 		}
+		//System.out.println("-------------");
 	}
 	
 	//Method to calculate the total energy of the system, by summing the kinetic and gravitational potential energies of each particle
@@ -37,6 +40,7 @@ public class Function
 		{
 			totalKinetic += energy[i].kineticEnergy();
 		}
+	//	System.out.println(totalKinetic + " ");
 		double totalGravitational = 0.0;
 		//Loop over pairs of particles and sum their potential energies
 		for (int j = 0; j < energy.length; j++)
@@ -46,6 +50,7 @@ public class Function
 				totalGravitational += Particle3D.GravitationalPotential(energy[j],energy[k]);
 			}
 		}
+	//	System.out.println(totalGravitational);
 		return totalKinetic + totalGravitational;
 		//return totalGravitational;
 	}
@@ -76,18 +81,18 @@ public class Function
 			{
 				if (i != j)
 				{
-					
-					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[j], particle[i]));
+					//DO NOT FUCKING CHANGE THIS YOU SHOULD KNOW HOW MUCH TIME WE SPENT CHANGING THIS ALREADY 
+					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[i], particle[j]));
 					forceArray[i]= (Vector3D.vectorAddition(forceArray[i],tempForceArray[i]));
-					//System.out.println(particle[i].name + " "+ particle[j].name + " " + forceArray[i] + " " + tempForceArray[i]);
+				//	System.out.println(particle[i].name + " "+ particle[j].name + " " + forceArray[i] + " " + tempForceArray[i]);
 					
 					
 					
 				}
 			}
-			//System.out.println("==========");
 			//forceArray[i]= (Vector3D.vectorAddition(forceArray[i], preForceArray[i]));
 			//forceArray[i] = forceArray[i].scalarDivide(2);
+			//System.out.println(forceArray[i] + " --");
 		}
 		
 		
@@ -135,12 +140,14 @@ public class Function
 		for(int i = 0; i < particleArray.length; i++)
 		{
 			mass += particleArray[i].getMass();
-			momentum = new Vector3D(Vector3D.vectorAddition(momentum, velocity.scalarMultiply(particleArray[i].getMass())));
+			momentum = new Vector3D(Vector3D.vectorAddition(momentum, particleArray[i].getVelocity().scalarMultiply(particleArray[i].getMass())));
 		}
 		momentum = momentum.scalarDivide(mass);
 		for(int i = 0; i < particleArray.length; i++)
 		{
-			velocity = Vector3D.vectorSubtraction(particleArray[i].getVelocity(), momentum);
+			
+			particleArray[i].setVelocity( Vector3D.vectorSubtraction(particleArray[i].getVelocity(), momentum));
+			
 		}
 	}
 }

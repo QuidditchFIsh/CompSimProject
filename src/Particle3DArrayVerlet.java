@@ -5,7 +5,7 @@ public class Particle3DArrayVerlet
 
 	public static void main(String[] argv) throws IOException, FileNotFoundException 
 	{
-		System.out.println("welp");
+		System.out.println("welm");
 		//Read the name of an input file from the command line and read the parameters of the system from there
 		File file = new File(argv[0]);
 		//Create a scanner object to read the data from the input file
@@ -50,19 +50,21 @@ public class Particle3DArrayVerlet
 			preForce[i] = new Vector3D();
 		}
 		//Calculate the initial forces acting on each particle
+	
 		Function.arrayForceUpdate(particleArray, force,preForce);
 		for(int j=0;j<n;j++)
 		{
 			preForce[j] = new Vector3D(force[j]);
-			//System.out.println(particleArray[j]);
+			System.out.println(preForce[j]);
 		}
 		//Adjust the momentum of the system to prevent the centre of mass from drifting
-		Function.adjustMomentumOfSystem(particleArray);
+		//Function.adjustMomentumOfSystem(particleArray);
 		//Calculate the initial energy of the system
 		double initalEnergy = Function.arrayTotalEnergy(particleArray);
-		//Loop over the iterations, performing the Verlet Time Integration Scheme
+		Function.outputVMD(particleArray, output1, 0);
 		for (int i = 0; i < iterations; i++)
 		{
+			
 			//Update the position of each particle
 			Function.arrayUpdatePosition(particleArray, dt, force);
 			//Update the force acting on each particle
@@ -70,17 +72,20 @@ public class Particle3DArrayVerlet
 			Function.arrayForceUpdate(particleArray, force, preForce);
 			//System.out.println(force[0] +" "+ force[1]);
 			//Update the velocity of each particle
+			
 			Function.arrayUpdateVelocity(particleArray, dt, force,preForce);
 			for(int j=0;j<n;j++)
 			{
+				//System.out.println(particleArray[j].getVelocity());
 				preForce[j] = new Vector3D(force[j]);
 				//System.out.println(particleArray[j]);
 			}
+			//System.out.println("===================");
 			//Write the positions of each particle to the first output f1ile to be read by VMD
-			Function.outputVMD(particleArray, output1, i);
+			Function.outputVMD(particleArray, output1, i+1);
 			
 			//Write the energy fluctuation - the difference between energy in this iteration and initial energy - to the second output file
-			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray) + " " + Function.arrayTotalEnergy(particleArray));
+			output2.println(initalEnergy  + " " + Function.arrayTotalEnergy(particleArray));
 			//System.out.println(initalEnergy + " " + Function.arrayTotalEnergy(particleArray));
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included

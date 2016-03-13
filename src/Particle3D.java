@@ -10,8 +10,8 @@ public class Particle3D
  
     /**These are the constructors for this class.
      */
-     Vector3D position = new Vector3D();
-     Vector3D velocity = new Vector3D();
+      Vector3D position = new Vector3D();
+     private Vector3D velocity = new Vector3D();
      
      private double mass;
     
@@ -92,6 +92,12 @@ public class Particle3D
         velocity.setY(y);
         velocity.setZ(z);
     }
+    public void setVelocity(Vector3D vel)
+    {
+    	velocity.setX(vel.getX());
+        velocity.setY(vel.getY());
+        velocity.setZ(vel.getZ());
+    }
     
     public void setMass(double mass)
     {
@@ -138,14 +144,17 @@ public class Particle3D
     {
     	double G = 6.67E-11;
         double R2 = small.particleDistance(small, big);
-        return -1* small.getMass() * big.getMass() * 1/R2 * G  ;
+        return -1* small.getMass() * big.getMass() * G/R2  ;
     }
     
     //Method to update the velocity using a given timestep dt and the force vector
     public void velocityUpdate(double dt, Vector3D force)
     {
+    	//System.out.println(force+ " "+ velocity);
         //velocity.addScaledVector(force, dt/mass);    
         velocity = new Vector3D(Vector3D.vectorAddition(velocity, force.scalarMultiply(dt / mass)));
+      //  System.out.println(velocity + "one");
+        //System.out.println("------------");
     }
     
     //Method to update the position to first order terms in the Taylor Expansion
@@ -158,6 +167,7 @@ public class Particle3D
     //Method to update the position to second order terms in the Taylor Expansion
     public void secondOrderPositionUpdate(double dt, Vector3D force)
     {
+    	//System.out.println(force.scalarMultiply(Math.pow(dt, 2)/(2 * mass)) + "fjfh" + Math.pow(dt, 2)/(2 * mass) + " " + force);
     	Vector3D pop = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));
     	//Vector3D lol = new Vector3D(Vector3D.vectorAddition(position, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
     	Vector3D lol = new Vector3D(Vector3D.vectorAddition(pop, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
@@ -177,14 +187,13 @@ public class Particle3D
     	double G = 6.67E-11;
         //Calculates the modulus squared of the distance between the particles
         double R2 = small.particleDistance(small, big);
-        R2=Math.pow(R2, 2);
+        R2=Math.pow(R2, 3);
         Vector3D a = new Vector3D( small.getPosition());
         Vector3D b = new Vector3D(big.getPosition());
         //Computes the unit vector between the particles
         Vector3D rHat = new Vector3D(Vector3D.vectorSubtraction(a, b));
-        rHat.scalarMultiply(1 / Math.sqrt(R2));
-        //Computes the gravitational force vector by multiplying the unit vector by the magnitude		
-        rHat.scalarMultiply((  big.getMass() * small.getMass() * (-G/R2)));      
+        //Computes the gravitational force vector by multiplying the unit vector by the magnitude
+        rHat = rHat.scalarMultiply(big.getMass() * small.getMass()  * (-G/R2)); 
         return rHat;
     }
 }
