@@ -157,8 +157,10 @@ public class Particle3D
     //Method to update the position to second order terms in the Taylor Expansion
     public void secondOrderPositionUpdate(double dt, Vector3D force)
     {
-    	position = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));
-    	position = new Vector3D(Vector3D.vectorAddition(position, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
+    	Vector3D pop = new Vector3D(Vector3D.vectorAddition(position, velocity.scalarMultiply(dt)));
+    	//Vector3D lol = new Vector3D(Vector3D.vectorAddition(position, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
+    	Vector3D lol = new Vector3D(Vector3D.vectorAddition(pop, force.scalarMultiply(Math.pow(dt, 2)/(2 * mass))));
+    	position = new Vector3D(lol);
     }
     
     //Static method to find the distance between two particles

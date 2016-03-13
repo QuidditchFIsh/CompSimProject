@@ -43,6 +43,7 @@ public class Function
 			{
 				double potential = Particle3D.GravitationalPotential(energy[j],energy[k]);
 				totalGravitational += potential;
+				
 			}
 		}
 		return totalKinetic + totalGravitational;
@@ -74,7 +75,6 @@ public class Function
 			{
 				if (i != j)
 				{
-					
 					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[j], particle[i]));
 					forceArray[i]= (Vector3D.vectorAddition(forceArray[i],tempForceArray[i]));
 					
@@ -83,6 +83,7 @@ public class Function
 			forceArray[i]= (Vector3D.vectorAddition(forceArray[i], preForceArray[i]));
 			forceArray[i] = forceArray[i].scalarDivide(2);
 		}
+		
 		
 	}
 	
@@ -124,7 +125,6 @@ public class Function
 	{
 		double mass = 0;
 		Vector3D momentum = new Vector3D();
-		@SuppressWarnings("unused")
 		Vector3D velocity = new Vector3D();
 		for(int i = 0; i < particleArray.length; i++)
 		{

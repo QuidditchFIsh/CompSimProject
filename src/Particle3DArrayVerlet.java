@@ -34,7 +34,7 @@ public class Particle3DArrayVerlet
 		Vector3D initPos = new Vector3D();
 		for (int i = 0; i < particleArray.length; i++)
 		{
-	
+			
 		particleArray[i] = new Particle3D("Temp");
 		particleArray[i].readScanner(input);
 		
@@ -50,11 +50,16 @@ public class Particle3DArrayVerlet
 		}
 		//Calculate the initial forces acting on each particle
 		Function.arrayForceUpdate(particleArray, force,preForce);
-		//Calculate the initial energy of the system
-		double initalEnergy = Function.arrayTotalEnergy(particleArray);
+		for(int j=0;j<n;j++)
+		{
+			preForce[j] = new Vector3D(force[j]);
+			force[j] = new Vector3D();
+			//System.out.println(particleArray[j]);
+		}
 		//Adjust the momentum of the system to prevent the centre of mass from drifting
 		Function.adjustMomentumOfSystem(particleArray);
-		
+		//Calculate the initial energy of the system
+		double initalEnergy = Function.arrayTotalEnergy(particleArray);
 		//Loop over the iterations, performing the Verlet Time Integration Scheme
 		for (int i = 0; i < iterations; i++)
 		{
@@ -62,21 +67,21 @@ public class Particle3DArrayVerlet
 			Function.arrayUpdatePosition(particleArray, dt, force);
 			//Update the force acting on each particle
 			//System.out.println(particleArray[0] + " " + particleArray[1] + " " + particleArray[2]);
-			Function.arrayForceUpdate(particleArray, force,preForce);
+			Function.arrayForceUpdate(particleArray, force, preForce);
 			//Update the velocity of each particle
 			Function.arrayUpdateVelocity(particleArray, dt, force);
 			for(int j=0;j<n;j++)
 			{
 				preForce[j] = new Vector3D(force[j]);
 				force[j] = new Vector3D();
-				System.out.println(particleArray[j]);
+				//System.out.println(particleArray[j]);
 			}
 			//Write the positions of each particle to the first output f1ile to be read by VMD
 			Function.outputVMD(particleArray, output1, i);
 			
 			//Write the energy fluctuation - the difference between energy in this iteration and initial energy - to the second output file
 			output2.println(initalEnergy - Function.arrayTotalEnergy(particleArray) + " " + Function.arrayTotalEnergy(particleArray));
-
+			//System.out.println(initalEnergy + " " + Function.arrayTotalEnergy(particleArray));
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included
 			for (int j = 1; j < particleArray.length; j++)
