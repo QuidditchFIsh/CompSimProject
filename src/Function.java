@@ -1,8 +1,10 @@
 import java.io.PrintWriter;
 import java.lang.Math;
+import java.util.*;
 
 public class Function 
 {
+	//static Formatter fmt = new Formatter();
 
 	//Method to update the position of each particle using up to the quadratic term in dt in the Taylor expansion of x(t+dt)
 	public static void arrayUpdatePosition(Particle3D[] position, double dt, Vector3D[] forceArray)
@@ -59,13 +61,17 @@ public class Function
 	//Method to output the positions of each particle after a given iteration i to an output file
 	public static void outputVMD(Particle3D[] particleArray, PrintWriter output1, int i)
 	{
+		
 		int n = particleArray.length;
 		
 			output1.printf("%d \n",n);
 			output1.printf("Point = %d \n",i);
 			for (int k = 0; k < n; k ++)
 			{
-				output1.println(particleArray[k].name + " " + particleArray[k].position);
+				output1.printf("%s ",particleArray[k].name  );
+				output1.printf("%.6g %.6g %.6g \n",particleArray[k].position.getX(),particleArray[k].position.getY(),particleArray[k].position.getZ());
+				//fmt.format("%16.e2 %16.e2 %16.e2 ",particleArray[k].position.getX(),particleArray[k].position.getY(),particleArray[k].position.getZ());
+				//output1.println(fmt);
 			}
 	}
 	
@@ -104,7 +110,8 @@ public class Function
 		double[] peri = new double[2];
 		peri[0] = initialDistance;
 		peri[1] = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
-		if (peri[1] < peri[0]) {
+		if (peri[1] < peri[0]) 
+		{
 			peri[0] = peri[1];
 		}
 		return peri[0];
@@ -116,19 +123,20 @@ public class Function
 		double[] ap = new double[2];
 		ap[0] = initialDistance;
 		ap[1] = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
-		if (ap[1] > ap[0]) {
+		if (ap[1] > ap[0])
+		{
 			ap[0] = ap[1];
 		}
 		return ap[0];
 	}
 	
 	//Method to count the number of orbit that a particle undergoes during the simulation by calculating the fraction of a year that passes with each iteration
-	public static void yearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit, double counter)
+	public static double yearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit)
 	{
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition());
 		double dotProduct = Vector3D.dotProduct(preSeparation, separation);
 		dotProduct = dotProduct / (separation.magnitude() * preSeparation.magnitude());
-		counter += Math.acos(dotProduct) / (2 * Math.PI);
+		return (Math.acos(dotProduct) / (2 * Math.PI));
 	}
 	
 	//Method to adjust the momentum of the system to prevent the centre of mass from drifting
@@ -136,7 +144,6 @@ public class Function
 	{
 		double mass = 0;
 		Vector3D momentum = new Vector3D();
-		Vector3D velocity = new Vector3D();
 		for(int i = 0; i < particleArray.length; i++)
 		{
 			mass += particleArray[i].getMass();
