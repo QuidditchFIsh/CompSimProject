@@ -24,13 +24,14 @@ public class Function
 			velocity[i].velocityUpdate(dt, temp.scalarDivide(2));
 		}
 	}
+
+	//Method to calculate the total energy of the system, by summing the kinetic and gravitational potential energies of each particle
 	private static double totalKinetic = 0.0;
 	private static double totalGravitational = 0.0;
-	//Method to calculate the total energy of the system, by summing the kinetic and gravitational potential energies of each particle
 	public static double arrayTotalEnergy(Particle3D[] energy)
 	{
-		totalKinetic =0;
-		totalGravitational=0;
+		totalKinetic = 0;
+		totalGravitational = 0;
 		//Loop over particles and sum their kinetic energies
 		for (int i = 0; i < energy.length; i++) 
 		{
@@ -77,12 +78,12 @@ public class Function
 			{
 				if (i != j)
 				{
-					if(i<j)
+					if(i < j)
 					{
 						tempForceArray[i][j] = new Vector3D(Particle3D.GravitationalForce(particle[i], particle[j]));
 						forceArray[i] = (Vector3D.vectorAddition(forceArray[i], tempForceArray[i][j]));
 					}
-					if(i>j)
+					if(i > j)
 					{
 						
 						forceArray[i] = Vector3D.vectorAddition(forceArray[i], tempForceArray[j][i].scalarMultiply(-1));
@@ -95,9 +96,10 @@ public class Function
 	//Method to find the perihelion of a given particle
 	public static double perihelion(double peri, Particle3D Sun, Particle3D orbit)
 	{
-		//comments
+		//Create a double which represents the current distance between the orbiting particle and the Sun
 		double distance = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
 		
+		//Compare this distance with the current shortest
 		if (distance < peri) 
 		{
 			return distance;
@@ -106,14 +108,12 @@ public class Function
 		{
 			return peri;
 		}
-		
 	}
 	
 	//Method to find the aphelion of a given particle
-	//As in the perihelion method, but compare to see if the first element is longer
+	//As in the perihelion method, but compare to see if the distance is longer
 	public static double aphelion(double ap, Particle3D Sun, Particle3D orbit)
 	{
-		//comments
 				double distance = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
 				
 				if (distance > ap) 
@@ -125,8 +125,9 @@ public class Function
 					return ap;
 				}
 	}
-	private static double dotProduct =0;
+	
 	//Method to count the number of orbits that a particle undergoes during the simulation by calculating the fraction of a year that passes with each iteration
+	private static double dotProduct = 0;
 	public static double yearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit)
 	{
 		//The vector separating the Sun and the orbiting particle in the current iteration
@@ -140,7 +141,7 @@ public class Function
 	}
 	
 	//Method to adjust the momentum of the system to prevent the centre of mass from drifting
-	private static double mass =0;
+	private static double mass = 0;
 	public static void adjustMomentumOfSystem (Particle3D[] particleArray)
 	{
 		mass = 0;

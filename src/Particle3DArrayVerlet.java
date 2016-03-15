@@ -31,22 +31,20 @@ public class Particle3DArrayVerlet
 		//Create a particle array to contain all n bodies
 		Particle3D[] particleArray = new Particle3D[n];
 		
-		for(int i=0;i<n ;i++)
+		for(int i = 0; i < n; i++)
 		{
 			particleArray[i] = new Particle3D("temp");
 			particleArray[i].readScanner(input);
 		}
+		
 		//Create an array of doubles that will count the number of years that have passed for each particle, not including the Sun
 		double[] counter = new double[particleArray.length - 1];
 		//Create an array of doubles to find the perihelion
-		double [] peri = new double[particleArray.length - 1];
+		double[] peri = new double[particleArray.length - 1];
 		//Create an array of doubles to find the aphelion
-		double [] ap = new double [particleArray.length - 1];
+		double[] ap = new double [particleArray.length - 1];
 		//Create a double which will store the value of the length of a year for each orbiting particle
 		double yearLength = 0;
-		//create arrays to hold the perihelion and aphelions of all particles in the system bar the sun
-		
-	
 		
 		//Create a Vector3D array to hold the initial positions of the particles
 		Vector3D[] initPos = new Vector3D[n];
@@ -60,11 +58,12 @@ public class Particle3DArrayVerlet
 			force[i] = new Vector3D();
 			preForce[i] = new Vector3D();
 		}
-		for(int i=0;i<n-1;i++)
+		
+		//Initialise the perihelion and aphelion arrays to the initial radii of each orbiting particle
+		for(int i = 0; i < n - 1; i++)
 		{
-			peri [i] = particleArray[i+1].position.magnitude();
-			ap[i] = particleArray[i+1].position.magnitude();
-			
+			peri[i] = particleArray[i + 1].position.magnitude();
+			ap[i] = particleArray[i + 1].position.magnitude();
 		}
 		
 		//Calculate the initial forces acting on each particle
@@ -95,26 +94,24 @@ public class Particle3DArrayVerlet
 			{
 				preForce[j] = new Vector3D(force[j]);
 			}
-			//Write the positions of each particle to the first output file to be read by VMD 
-			//as we dont need to output every single position this is performed every 10th iteration is now outputted. 
+			//Write the positions of each particle to the first output file to be read by VMD
+			//Only output ever 10th iteration for efficiency
 			if(i%10 == 0 )
 			{
 				Function.outputVMD(particleArray, output1, i + 1);
 			}
 			
 			//Write the initial energy and the energy fluctuation - the difference between energy in this iteration and initial energy - to the second output file
-			output2.printf("%.6g %.6g",initalEnergy,(Function.arrayTotalEnergy(particleArray) - initalEnergy));
+			output2.printf("%.6g %.6g", initalEnergy, (Function.arrayTotalEnergy(particleArray) - initalEnergy));
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included
 			for (int j = 1; j < particleArray.length; j++)
 				{
 					counter[j - 1] += Function.yearCounter(Vector3D.vectorSubtraction(particleArray[0].getPosition(), initPos[j]), particleArray[0], particleArray[j]);
 					initPos[j] = new Vector3D(particleArray[j].position);
-				    peri[j-1]= Function.perihelion(peri[j-1], particleArray[0], particleArray[j]);
-					ap[j-1]=Function.aphelion(ap[j-1], particleArray[0], particleArray[j]);
+				    peri[j - 1]= Function.perihelion(peri[j - 1], particleArray[0], particleArray[j]);
+					ap[j - 1]=Function.aphelion(ap[j - 1], particleArray[0], particleArray[j]);
 				}
-			
-		
 		}
 		System.out.println("Begin outputing data");
 		//Write the average length of a year, the total number of orbits completed, the perihelion distance, and the aphelion distance for each particle to the third output file 
@@ -122,8 +119,7 @@ public class Particle3DArrayVerlet
 		for (int k = 0; k < counter.length; k++)
 		{
 			yearLength = iterations * dt / (counter[k]);
-			//output3.println(particleArray[k].name + " " + yearLength + " " + counter[k] + " " + perihelion[k] + " " + aphelion[k]);
-			output3.printf("\n%s %.6g %.3g %.6g %.6g", particleArray[k + 1].name,yearLength,counter[k],peri[k],ap[k]);
+			output3.printf("\n%s %.6g %.3g %.6g %.6g", particleArray[k + 1].name, yearLength, counter[k], peri[k], ap[k]);
 		}
 		output1.close();
 		output2.close();
