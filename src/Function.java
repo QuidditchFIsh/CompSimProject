@@ -1,6 +1,5 @@
 import java.io.PrintWriter;
 import java.lang.Math;
-import java.util.*;
 
 public class Function 
 {
