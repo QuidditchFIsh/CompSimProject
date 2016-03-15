@@ -93,33 +93,37 @@ public class Function
 	}
 	
 	//Method to find the perihelion of a given particle
-	public static double perihelion(double initialDistance, Particle3D Sun, Particle3D orbit)
+	public static double perihelion(double peri, Particle3D Sun, Particle3D orbit)
 	{
-		double[] peri = new double[2];
-		//Zeroth element represents the shortest distance between a particle and the Sun so far
-		peri[0] = initialDistance;
-		//First element represents the distance between the particle and the Sun in the given iteration
-		peri[1] = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
-		//Compare the zeroth and first elements and replace the zeroth with the first if the first is shorter
-		if (peri[1] < peri[0]) 
+		//comments
+		double distance = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
+		
+		if (distance < peri) 
 		{
-			peri[0] = peri[1];
+			return distance;
 		}
-		return peri[0];
+		else
+		{
+			return peri;
+		}
+		
 	}
 	
 	//Method to find the aphelion of a given particle
 	//As in the perihelion method, but compare to see if the first element is longer
-	public static double aphelion(double initialDistance, Particle3D Sun, Particle3D orbit)
+	public static double aphelion(double ap, Particle3D Sun, Particle3D orbit)
 	{
-		double[] ap = new double[2];
-		ap[0] = initialDistance;
-		ap[1] = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
-		if (ap[1] > ap[0])
-		{
-			ap[0] = ap[1];
-		}
-		return ap[0];
+		//comments
+				double distance = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition()).magnitude();
+				
+				if (distance > ap) 
+				{
+					return distance;
+				}
+				else
+				{
+					return ap;
+				}
 	}
 	private static double dotProduct =0;
 	//Method to count the number of orbits that a particle undergoes during the simulation by calculating the fraction of a year that passes with each iteration
@@ -130,7 +134,7 @@ public class Function
 		//Take the dot product of the above with the vector separating them in the previous iteration
 		dotProduct = Vector3D.dotProduct(preSeparation, separation);
 		//Use a.b = |a||b|cos(theta) and divide by the magnitudes to find the cosine of the angle between the vectors
-		dotProduct = dotProduct / (separation.magnitude() * preSeparation.magnitude());
+		dotProduct /= (separation.magnitude() * preSeparation.magnitude());
 		//Take the arccosine of dotProduct to find the angle theta, and then divide by 2Pi to give the fraction of an orbit that passed over this iteration 
 		return (Math.acos(dotProduct) / (2 * Math.PI));
 	}
