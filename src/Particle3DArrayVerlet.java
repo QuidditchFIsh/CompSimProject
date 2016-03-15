@@ -99,11 +99,11 @@ public class Particle3DArrayVerlet
 		}
 		
 		//Write the average length of a year, the total number of orbits completed, the perihelion distance, and the aphelion distance for each particle to the third output file 
-		output3.printf("Average Year Length, total number of years, perihelion, and aphelion \n ============================ \n");
+		output3.printf("Name, average year length, total number of years, perihelion, and aphelion \n ============================ \n");
 		for (int k = 0; k < counter.length; k++)
 		{
 			yearLength = iterations * dt / (counter[k]);
-			output3.println(yearLength + " " + counter[k] + " " + perihelion[k] + " " + aphelion[k]);
+			output3.println(particleArray[k].name + " " + yearLength + " " + counter[k] + " " + perihelion[k] + " " + aphelion[k]);
 		}
 		output1.close();
 		output2.close();
