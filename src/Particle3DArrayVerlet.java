@@ -31,6 +31,12 @@ public class Particle3DArrayVerlet
 		//Create a particle array to contain all n bodies
 		Particle3D[] particleArray = new Particle3D[n];
 		
+		for(int i=0;i<n ;i++)
+		{
+			particleArray[i] = new Particle3D("temp");
+			particleArray[i].readScanner(input);
+		}
+		
 		//Create an array of doubles that will count the number of years that have passed for each particle, not including the Sun
 		double[] counter = new double[particleArray.length - 1];
 		//Create an array of doubles to find the perihelion
@@ -81,18 +87,19 @@ public class Particle3DArrayVerlet
 			{
 				preForce[j] = new Vector3D(force[j]);
 			}
-			//Write the positions of each particle to the first output file to be read by VMD
-			Function.outputVMD(particleArray, output1, i + 1);
+			//Write the positions of each particle to the first output file to be read by VMD 
+			//as we dont need to output every single position this is performed every 10th iteration is now outputted. 
+			if(i%10 == 0 )
+				Function.outputVMD(particleArray, output1, i + 1);
 			
 			//Write the initial energy and the energy fluctuation - the difference between energy in this iteration and initial energy - to the second output file
-			output2.println(initalEnergy  + " " + (Function.arrayTotalEnergy(particleArray) - initalEnergy));
+			output2.printf("%.6g %.6g",initalEnergy,(Function.arrayTotalEnergy(particleArray) - initalEnergy));
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included
 			for (int j = 1; j < particleArray.length; j++)
 				{
 					counter[j - 1] += Function.yearCounter(Vector3D.vectorSubtraction(particleArray[0].getPosition(), initPos[j]), particleArray[0], particleArray[j]);
 					initPos[j] = new Vector3D(particleArray[j].position);
-					//LOOK AT HOLDING THE FORCE IN THE PARTICLE ARRAY
 					perihelion[j - 1] = Function.perihelion(initPos[j].magnitude(), particleArray[0], particleArray[j]);
 					aphelion[j - 1] = Function.aphelion(initPos[j].magnitude(), particleArray[0], particleArray[j]);
 				}
@@ -103,7 +110,8 @@ public class Particle3DArrayVerlet
 		for (int k = 0; k < counter.length; k++)
 		{
 			yearLength = iterations * dt / (counter[k]);
-			output3.println(particleArray[k].name + " " + yearLength + " " + counter[k] + " " + perihelion[k] + " " + aphelion[k]);
+			//output3.println(particleArray[k].name + " " + yearLength + " " + counter[k] + " " + perihelion[k] + " " + aphelion[k]);
+			output3.printf("\n%s %.6g %.3g %.6g %.6g", particleArray[k].name,yearLength,counter[k],perihelion[k],aphelion[k]);
 		}
 		output1.close();
 		output2.close();

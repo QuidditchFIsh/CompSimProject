@@ -24,17 +24,18 @@ public class Function
 			velocity[i].velocityUpdate(dt, temp.scalarDivide(2));
 		}
 	}
-	
+	private static double totalKinetic = 0.0;
+	private static double totalGravitational = 0.0;
 	//Method to calculate the total energy of the system, by summing the kinetic and gravitational potential energies of each particle
 	public static double arrayTotalEnergy(Particle3D[] energy)
 	{
-		double totalKinetic = 0.0;
+		totalKinetic =0;
+		totalGravitational=0;
 		//Loop over particles and sum their kinetic energies
 		for (int i = 0; i < energy.length; i++) 
 		{
 			totalKinetic += energy[i].kineticEnergy();
 		}
-		double totalGravitational = 0.0;
 		//Loop over pairs of particles and sum their potential energies
 		for (int j = 0; j < energy.length; j++)
 		{
@@ -66,7 +67,7 @@ public class Function
 	//Method to update the force acting on each particle by looping over every other particle in the force array
 	public static void arrayForceUpdate(Particle3D[] particle, Vector3D[] forceArray, Vector3D[] preForceArray)
 	{
-		Vector3D[] tempForceArray = new Vector3D[forceArray.length];
+		Vector3D[][] tempForceArray = new Vector3D[forceArray.length][forceArray.length];
 		//Loop over each particle i
 		for (int i = 0; i < forceArray.length; i++)
 		{
@@ -76,8 +77,16 @@ public class Function
 			{
 				if (i != j)
 				{
-					tempForceArray[i] = new Vector3D(Particle3D.GravitationalForce(particle[i], particle[j]));
-					forceArray[i] = (Vector3D.vectorAddition(forceArray[i], tempForceArray[i]));
+					if(i<j)
+					{
+						tempForceArray[i][j] = new Vector3D(Particle3D.GravitationalForce(particle[i], particle[j]));
+						forceArray[i] = (Vector3D.vectorAddition(forceArray[i], tempForceArray[i][j]));
+					}
+					if(i>j)
+					{
+						
+						forceArray[i] = Vector3D.vectorAddition(forceArray[i], tempForceArray[j][i].scalarMultiply(-1));
+					}
 				}
 			}
 		}
@@ -112,14 +121,14 @@ public class Function
 		}
 		return ap[0];
 	}
-	
+	private static double dotProduct =0;
 	//Method to count the number of orbits that a particle undergoes during the simulation by calculating the fraction of a year that passes with each iteration
 	public static double yearCounter(Vector3D preSeparation, Particle3D Sun, Particle3D orbit)
 	{
 		//The vector separating the Sun and the orbiting particle in the current iteration
 		Vector3D separation = Vector3D.vectorSubtraction(Sun.getPosition(), orbit.getPosition());
 		//Take the dot product of the above with the vector separating them in the previous iteration
-		double dotProduct = Vector3D.dotProduct(preSeparation, separation);
+		dotProduct = Vector3D.dotProduct(preSeparation, separation);
 		//Use a.b = |a||b|cos(theta) and divide by the magnitudes to find the cosine of the angle between the vectors
 		dotProduct = dotProduct / (separation.magnitude() * preSeparation.magnitude());
 		//Take the arccosine of dotProduct to find the angle theta, and then divide by 2Pi to give the fraction of an orbit that passed over this iteration 
@@ -127,9 +136,10 @@ public class Function
 	}
 	
 	//Method to adjust the momentum of the system to prevent the centre of mass from drifting
+	private static double mass =0;
 	public static void adjustMomentumOfSystem (Particle3D[] particleArray)
 	{
-		double mass = 0;
+		mass = 0;
 		Vector3D momentum = new Vector3D();
 		//Sum the masses and momenta of all particles
 		for(int i = 0; i < particleArray.length; i++)
