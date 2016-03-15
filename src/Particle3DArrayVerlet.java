@@ -5,7 +5,7 @@ public class Particle3DArrayVerlet
 
 	public static void main(String[] argv) throws IOException, FileNotFoundException 
 	{
-		System.out.println("Begin");
+		System.out.println("Begin initalising variables");
 		
 		//Read the name of an input file from the command line
 		File file = new File(argv[0]);
@@ -80,7 +80,7 @@ public class Particle3DArrayVerlet
 		double initalEnergy = Function.arrayTotalEnergy(particleArray);
 		//Write the initial positions of the particles to the first output file
 		Function.outputVMD(particleArray, output1, 0);
-		
+		System.out.println("Beging main iterative loop");
 		//Perform the main loop over each particle, following the Verlet Integration Scheme to compute the trajectories, as well as energies, perihelia and aphelia
 		for (int i = 0; i < iterations; i++)
 		{
@@ -116,7 +116,7 @@ public class Particle3DArrayVerlet
 			
 		
 		}
-		
+		System.out.println("Begin outputing data");
 		//Write the average length of a year, the total number of orbits completed, the perihelion distance, and the aphelion distance for each particle to the third output file 
 		output3.printf("Name, average year length, total number of years, perihelion, and aphelion \n ============================ \n");
 		for (int k = 0; k < counter.length; k++)
@@ -129,5 +129,6 @@ public class Particle3DArrayVerlet
 		output2.close();
 		output3.close();
 		input.close();
+		System.out.println("End Program");
 	}
 }
