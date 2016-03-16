@@ -36,13 +36,12 @@ public class Particle3DArrayVerlet
 			particleArray[i] = new Particle3D("temp");
 			particleArray[i].readScanner(input);
 		}
-		
 		//Create an array of doubles that will count the number of years that have passed for each particle, not including the Sun
-		double[] counter = new double[particleArray.length - 1];
+		double[] counter = new double[n - 1];
 		//Create an array of doubles to find the perihelion
-		double[] peri = new double[particleArray.length - 1];
+		double[] peri = new double[n- 1];
 		//Create an array of doubles to find the aphelion
-		double[] ap = new double [particleArray.length - 1];
+		double[] ap = new double [n- 1];
 		//Create a double which will store the value of the length of a year for each orbiting particle
 		double yearLength = 0;
 		
@@ -105,7 +104,7 @@ public class Particle3DArrayVerlet
 			output2.printf("%.6g %.6g", initalEnergy, (Function.arrayTotalEnergy(particleArray) - initalEnergy));
 			//Loop over the particles and count the number of years that have passed
 			//Start from 1 so that the Sun is not included
-			for (int j = 1; j < particleArray.length; j++)
+			for (int j = 1; j < n; j++)
 				{
 					counter[j - 1] += Function.yearCounter(Vector3D.vectorSubtraction(particleArray[0].getPosition(), initPos[j]), particleArray[0], particleArray[j]);
 					initPos[j] = new Vector3D(particleArray[j].position);
@@ -120,6 +119,7 @@ public class Particle3DArrayVerlet
 		{
 			yearLength = iterations * dt / (counter[k]);
 			output3.printf("\n%s %.6g %.3g %.6g %.6g", particleArray[k + 1].name, yearLength, counter[k], peri[k], ap[k]);
+			Function.verifyK3L(peri[k], ap[k], yearLength, output3, particleArray);
 		}
 		output1.close();
 		output2.close();
