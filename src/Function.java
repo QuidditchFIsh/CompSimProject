@@ -160,4 +160,18 @@ public class Function
 			particleArray[i].setVelocity(Vector3D.vectorSubtraction(particleArray[i].getVelocity(), momentum));
 		}
 	}
+	private static double keplerConstant = 4*Math.pow(Math.PI, 2)/6.67E-11;
+	public static void verifyK3L(double perhelion , double aphelion, double orbitalPeriod,PrintWriter out3,Particle3D[] particleArray)
+	{
+		for(int i = 0; i < particleArray.length; i++)
+		{
+			mass += particleArray[i].getMass();
+		}
+		keplerConstant /= mass;
+		double semiMajor =( perhelion + aphelion )*0.5;
+		semiMajor = Math.pow(semiMajor, 3);
+		orbitalPeriod = Math.pow(orbitalPeriod, 2);
+		out3.println(orbitalPeriod + " " + semiMajor*keplerConstant);
+		
+	}
 }
